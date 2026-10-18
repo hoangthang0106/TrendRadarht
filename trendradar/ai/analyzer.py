@@ -153,7 +153,7 @@ class AIAnalyzer:
         prepared = self._prepare_news_content(stats, rss_stats)
         total_news = prepared.hotlist_total + prepared.rss_total
 
-        if not prepared.news_content and not prepared.rss_content:
+        if not prepared.news_content and not prepared.rss_content and not (self.include_standalone and standalone_data):
             return AIAnalysisResult(
                 success=False,
                 skipped=True,
