@@ -812,7 +812,11 @@ class NewsAnalyzer:
         # 检查是否有有效内容（热榜或RSS）
         has_news_content = self._has_valid_content(stats, new_titles)
         has_rss_content = bool(rss_items and len(rss_items) > 0)
-        has_any_content = has_news_content or has_rss_content
+        has_standalone_content = bool(
+            standalone_data
+            and (standalone_data.get("platforms") or standalone_data.get("rss_feeds"))
+        )
+        has_any_content = has_news_content or has_rss_content or has_standalone_content
 
         # 计算热榜匹配条数
         news_count = sum(len(stat.get("titles", [])) for stat in stats) if stats else 0
