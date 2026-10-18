@@ -4,8 +4,6 @@ services:
     container_name: trendradar-ollama
     restart: unless-stopped
     volumes:
-  ollama-data:
-    name: trendradar_ollama_data
       - ollama-data:/root/.ollama
     environment:
       - OLLAMA_KEEP_ALIVE=24h
@@ -102,3 +100,7 @@ services:
     environment:
       - TZ=Asia/Ho_Chi_Minh
       - MCP_PORT=${MCP_PORT:-3333}
+
+volumes:
+  ollama-data:
+    name: trendradar_ollama_data
