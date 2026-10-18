@@ -163,6 +163,14 @@ rss:
       name: "Yahoo Finance - Kinh doanh và thị trường"
       url: "https://finance.yahoo.com/news/rssindex"
 
+    - id: "google-trends-vn"
+      name: "Google Trends - Việt Nam"
+      url: "https://trends.google.com/trending/rss?geo=VN"
+
+    - id: "google-trends-us"
+      name: "Google Trends - Hoa Kỳ"
+      url: "https://trends.google.com/trending/rss?geo=US"
+
     # 自定义源示例
     # - id: "custom-feed"
     #   name: "自定义源"
@@ -264,8 +272,8 @@ display:
   # 推送展示由 regions.standalone 控制，AI 分析由 ai_analysis.include_standalone 控制
   standalone:
     platforms: ["toutiao", "baidu", "wallstreetcn-hot", "thepaper", "bilibili-hot-search", "cls-hot", "ifeng", "tieba", "weibo", "douyin", "zhihu"]
-    rss_feeds: ["vnexpress-latest", "vnexpress-world", "vnexpress-business", "tuoitre-latest", "tuoitre-world", "vna-world", "vna-science", "hacker-news", "yahoo-finance"]
-    max_items: 8                                # Giữ bản tin gọn để AI tạo draft nhanh
+    rss_feeds: ["vnexpress-latest", "vnexpress-world", "vnexpress-business", "tuoitre-latest", "tuoitre-world", "vna-world", "vna-science", "hacker-news", "yahoo-finance", "google-trends-vn", "google-trends-us"]
+    max_items: 5                                # Giữ bản tin gọn để AI tạo draft nhanh
 
 
 # ===============================================================
