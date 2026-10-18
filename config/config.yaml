@@ -153,7 +153,7 @@ rss:
 
     - id: "vna-science"
       name: "TTXVN - Khoa học công nghệ"
-      url: "https://vnanet.vn/vi/rss/khoa-hoc-cong-nghe-20.rss"
+      url: "https://vnanet.vn/vi/rss/khoa-hoc-cong-nghe-13.rss"
 
     - id: "hacker-news"
       name: "Hacker News - Công nghệ và startup toàn cầu"
