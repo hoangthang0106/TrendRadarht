@@ -1,0 +1,53 @@
+name: Validate hardened fork
+
+on:
+  push:
+    branches: ["master"]
+  pull_request:
+    branches: ["master"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v7
+        with:
+          version: "0.13.1"
+
+      - name: Install locked dependencies
+        run: uv sync --frozen --no-dev
+
+      - name: Compile Python
+        run: uv run python -m compileall -q trendradar mcp_server docker/manage.py docker/secure_http_server.py
+
+      - name: Validate Docker Compose
+        run: docker compose -f docker/docker-compose.yml config >/dev/null
+
+      - name: Test safe report server
+        run: |
+          set -euo pipefail
+          TESTDIR="$(mktemp -d)"
+          mkdir -p "$TESTDIR/news"
+          printf '<!doctype html><title>ok</title>' > "$TESTDIR/index.html"
+          printf 'private-db' > "$TESTDIR/news/test.db"
+          python docker/secure_http_server.py --directory "$TESTDIR" --bind 127.0.0.1 --port 18080 &
+          PID=$!
+          trap 'kill "$PID" 2>/dev/null || true; rm -rf "$TESTDIR"' EXIT
+          sleep 1
+          test "$(curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:18080/)" = "200"
+          test "$(curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:18080/news/test.db)" = "403"
+          test "$(curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:18080/news/)" = "403"
