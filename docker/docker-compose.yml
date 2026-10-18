@@ -1,4 +1,23 @@
 services:
+  newsnow:
+    image: ghcr.io/ourongxing/newsnow:latest
+    container_name: trendradar-newsnow
+    restart: unless-stopped
+    expose:
+      - "4444"
+    volumes:
+      - newsnow-data:/usr/app/.data
+    environment:
+      - HOST=0.0.0.0
+      - PORT=4444
+      - NODE_ENV=production
+      - INIT_TABLE=true
+      - ENABLE_CACHE=true
+      - G_CLIENT_ID=
+      - G_CLIENT_SECRET=
+      - JWT_SECRET=
+      - PRODUCTHUNT_API_TOKEN=
+
   ollama:
     image: ollama/ollama:latest
     container_name: trendradar-ollama
@@ -34,6 +53,8 @@ services:
     container_name: trendradar
     restart: unless-stopped
     depends_on:
+      newsnow:
+        condition: service_started
       ollama-init:
         condition: service_completed_successfully
 
@@ -48,6 +69,7 @@ services:
       - TZ=Asia/Ho_Chi_Minh
       # Web 服务器
       - WEBSERVER_PORT=${WEBSERVER_PORT:-8080}
+      - PLATFORMS_API_URL=${PLATFORMS_API_URL:-http://newsnow:4444/api/s}
       # 通知渠道
       - FEISHU_WEBHOOK_URL=${FEISHU_WEBHOOK_URL:-}
       - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN:-}
@@ -90,5 +112,7 @@ services:
 
 
 volumes:
+  newsnow-data:
+    name: trendradar_newsnow_data
   ollama-data:
     name: trendradar_ollama_data
