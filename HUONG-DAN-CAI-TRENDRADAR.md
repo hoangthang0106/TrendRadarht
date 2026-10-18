@@ -1,6 +1,6 @@
 # TrendRadarht — Hướng dẫn chạy trên Proxmox/Portainer
 
-Bản fork này theo dõi hotlist đa nền tảng, Google Trends Việt Nam/Hoa Kỳ và RSS báo chí; mỗi 30 phút gửi tóm tắt cùng tối đa 3 nháp X cho các chủ đề đang nổi, mỗi chủ đề một bài riêng. Mày tự mở nguồn, kiểm tra, sửa và đăng; hệ thống không đăng nhập hay tự đăng lên X.
+Bản fork này giữ bộ hotlist đa nền tảng của tác giả TrendRadar, dùng RSS mặc định Hacker News và Yahoo Finance; mỗi 30 phút gửi tóm tắt cùng tối đa 3 nháp X cho các chủ đề đang nổi, mỗi chủ đề một bài riêng. Mày tự mở nguồn, kiểm tra, sửa và đăng; hệ thống không đăng nhập hay tự đăng lên X.
 
 ## Cách cài bằng Portainer
 
@@ -26,8 +26,8 @@ Bản fork này theo dõi hotlist đa nền tảng, Google Trends Việt Nam/Hoa
 
 ## Cấu hình đã đặt sẵn
 
-- **Nguồn:** hotlist tích hợp của TrendRadar, Google Trends Việt Nam/Hoa Kỳ, RSS VnExpress, Tuổi Trẻ, TTXVN, Hacker News và Yahoo Finance.
-- **Phạm vi:** AI xem các chủ đề trong bảng hotlist và RSS đã chọn, không cần cố định một ngách. Telegram chỉ gửi tóm tắt và các nháp đã chọn, tránh đổ nguyên bảng dài vào chat.
+- **Nguồn:** giữ nguyên 11 nền tảng hotlist gốc (Toutiao, Baidu, Wallstreetcn, ThePaper, Bilibili, CLS, Ifeng, Tieba, Weibo, Douyin, Zhihu); RSS giữ nguồn mặc định Hacker News và Yahoo Finance.
+- **Phạm vi:** không khóa vào một ngách; AI nhận các hotlist đã chọn và RSS. Telegram chỉ gửi tóm tắt và các nháp, tránh đổ nguyên bảng dài vào chat.
 - **Tần suất:** 30 phút/lần; chế độ incremental giúp tránh gửi lặp các mục đã thấy.
 - **Nháp:** tối đa 3 bài mỗi lượt, mỗi bài về một chủ đề riêng, tối đa 240 ký tự và kèm link nguồn để mày kiểm tra.
 - **AI:** Ollama chạy cục bộ với Qwen 2.5 3B; không cần API AI trả phí. Model lưu trong volume `trendradar_ollama_data`.
