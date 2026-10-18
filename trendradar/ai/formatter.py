@@ -372,6 +372,28 @@ def render_ai_analysis_html_rich(result: AIAnalysisResult) -> str:
                         <div class="ai-block-content">{content_html}</div>
                     </div>"""
 
+    if result.x_drafts:
+        drafts_html = ""
+        for index, item in enumerate(result.x_drafts, 1):
+            topic = _escape_html(item.get("topic", ""))
+            draft_text = _escape_html(item.get("draft", ""))
+            source_url = item.get("source_url", "")
+            source_html = ""
+            if source_url.startswith(("https://", "http://")):
+                safe_url = _escape_html(source_url)
+                source_html = f'<p>来源：<a href="{safe_url}" target="_blank" rel="noopener noreferrer">打开原文</a></p>'
+            drafts_html += (
+                f'<div class="ai-block">'
+                f'<div class="ai-block-title">{index}. {topic}</div>'
+                f'<pre style="white-space: pre-wrap">{draft_text}</pre>'
+                f'{source_html}</div>'
+            )
+        ai_html += f"""
+                    <div class="ai-block">
+                        <div class="ai-block-title">可复制的 X 草稿（每个主题独立）</div>
+                        <div class="ai-block-content">{drafts_html}</div>
+                    </div>"""
+
     if result.standalone_summaries:
         summaries_text = _format_standalone_summaries(result.standalone_summaries)
         if summaries_text:
