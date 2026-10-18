@@ -27,7 +27,10 @@ services:
     command: ["ollama pull ${OLLAMA_MODEL:-qwen2.5:3b}"]
 
   trendradar:
-    image: wantcat/trendradar:latest
+    image: trendradarht:local
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
     container_name: trendradar
     restart: unless-stopped
     depends_on:
@@ -85,21 +88,6 @@ services:
       - RUN_MODE=${RUN_MODE:-cron}
       - IMMEDIATE_RUN=${IMMEDIATE_RUN:-true}
 
-  trendradar-mcp:
-    image: wantcat/trendradar-mcp:latest
-    container_name: trendradar-mcp
-    restart: unless-stopped
-
-    ports:
-      - "${MCP_HOST:-127.0.0.1}:${MCP_PORT:-3333}:3333"
-
-    volumes:
-      - ../config:/app/config:ro
-      - ../output:/app/output
-
-    environment:
-      - TZ=Asia/Ho_Chi_Minh
-      - MCP_PORT=${MCP_PORT:-3333}
 
 volumes:
   ollama-data:
