@@ -248,11 +248,7 @@ display:
   # 调整顺序：剪切粘贴整行即可
   # 要显示某个区域，需同时：1. 在此列表中  2. 下方 regions 对应开关为 true
   region_order:
-    - new_items                           # 1️⃣ 新增热点区域
-    - hotlist                             # 2️⃣ 热榜区域（关键词匹配 / AI 智能筛选）
-    - rss                                 # 3️⃣ RSS 订阅区域
-    - standalone                          # 4️⃣ 独立展示区
-    - ai_analysis                         # 5️⃣ AI 分析区域
+    - ai_analysis                         # Telegram 只推送 AI 摘要和可复制的 X 草稿
 
   # 推送区域开关（需配合上方 region_order 使用）
   regions:
@@ -261,7 +257,7 @@ display:
                                       # 注：热点词汇统计中的新增标记🆕不受此配置影响
 
     rss: true                         # RSS 订阅区域（true=显示并分析, false=隐藏并跳过分析）
-    standalone: true                  # 展示完整榜单，不按固定关键词筛掉热点
+    standalone: false                 # 完整榜单仍提供给 AI，但不把原始榜单整批刷到 Telegram
     ai_analysis: true                 # AI 分析区域（true=显示, false=隐藏）
 
   # 独立展示区：将指定平台/RSS 完整展示，不受关键词过滤
