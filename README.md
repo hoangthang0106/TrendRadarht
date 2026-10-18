@@ -56,6 +56,9 @@
 
 ## 📑 快速导航
 
+> **Vietnamese Portainer setup:** [HUONG-DAN-CAI-TRENDRADAR.md](HUONG-DAN-CAI-TRENDRADAR.md) — local Ollama, Telegram X drafts, and Proxmox deployment.
+
+
 > 💡 **点击下方链接**可快速跳转到对应章节。部署推荐从「**快速开始**」入手，需要详细自定义请看「**配置详解**」
 
 <div align="center">
