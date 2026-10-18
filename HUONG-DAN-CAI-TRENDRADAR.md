@@ -54,6 +54,7 @@ và Environment variable:
 ```text
 TELEGRAM_BOT_TOKEN_FILE=/run/secrets/telegram_bot_token
 TELEGRAM_CHAT_ID=<chat_id_cua_may>
+# Có thể dùng TELEGRAM_CHAT_ID_FILE nếu muốn mount chat ID thành file.
 ```
 
 Khi dùng `TELEGRAM_BOT_TOKEN_FILE`, **không cần** đặt `TELEGRAM_BOT_TOKEN`. Code đã hỗ trợ đọc secret từ file. Cách này giúp token không xuất hiện trong cấu hình environment của container.
@@ -64,9 +65,17 @@ Khi dùng `TELEGRAM_BOT_TOKEN_FILE`, **không cần** đặt `TELEGRAM_BOT_TOKEN
 
 1. Mở `@BotFather` → `/newbot` → tạo bot.
 2. Mở bot mới → **Start** → gửi một tin bất kỳ.
-3. Trên máy của mày, mở:
-   `https://api.telegram.org/bot<TOKEN>/getUpdates`
-4. Tìm `message.chat.id`. Chat ID không nhạy cảm bằng bot token, nhưng vẫn không cần commit vào Git.
+3. Trên terminal Ubuntu, nhập token ở chế độ ẩn rồi gọi Bot API:
+
+```bash
+read -s -p "Telegram bot token: " BOT_TOKEN; echo
+curl -s "https://api.telegram.org/bot${BOT_TOKEN}/getUpdates"
+unset BOT_TOKEN
+```
+
+4. Tìm `message.chat.id`.
+
+Cách này không ghi token trực tiếp vào command history và không lưu token trong lịch sử URL của trình duyệt.
 
 ## Cấu hình đã đặt sẵn
 
