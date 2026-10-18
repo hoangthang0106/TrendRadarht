@@ -39,6 +39,35 @@ def _get_env_str(key: str, default: str = "") -> str:
     return os.environ.get(key, "").strip() or default
 
 
+def _get_secret_str(key: str, default: str = "") -> str:
+    """读取敏感配置：环境变量优先，其次 KEY_FILE 指向的只读文件。
+
+    这样可以把 Telegram token、密码、API key 等放在 Docker/Portainer
+    的 secret/bind-mounted file 中，避免把明文写进 Git 仓库或容器配置文件。
+    """
+    direct_value = os.environ.get(key, "").strip()
+    if direct_value:
+        return direct_value
+
+    file_key = f"{key}_FILE"
+    secret_path = os.environ.get(file_key, "").strip()
+    if not secret_path:
+        return default
+
+    path = Path(secret_path)
+    try:
+        if not path.is_file():
+            raise ValueError(f"{file_key} không trỏ tới file hợp lệ: {secret_path}")
+        if path.stat().st_size > 1024 * 1024:
+            raise ValueError(f"{file_key} vượt quá giới hạn 1 MiB")
+        value = path.read_text(encoding="utf-8").strip()
+        if not value:
+            raise ValueError(f"{file_key} đang trỏ tới file rỗng")
+        return value
+    except (OSError, UnicodeError) as exc:
+        raise ValueError(f"Không đọc được secret từ {file_key}: {exc}") from exc
+
+
 def _load_app_config(config_data: Dict) -> Dict:
     """加载应用配置"""
     app_config = config_data.get("app", {})
@@ -259,7 +288,7 @@ def _load_ai_config(config_data: Dict) -> Dict:
     return {
         # LiteLLM 核心配置
         "MODEL": _get_env_str("AI_MODEL") or ai_config.get("model", ""),
-        "API_KEY": _get_env_str("AI_API_KEY") or ai_config.get("api_key", ""),
+        "API_KEY": _get_secret_str("AI_API_KEY") or ai_config.get("api_key", ""),
         "API_BASE": _get_env_str("AI_API_BASE") or ai_config.get("api_base", ""),
 
         # 生成参数
@@ -380,8 +409,8 @@ def _load_storage_config(config_data: Dict) -> Dict:
         "REMOTE": {
             "ENDPOINT_URL": _get_env_str("S3_ENDPOINT_URL") or remote.get("endpoint_url", ""),
             "BUCKET_NAME": _get_env_str("S3_BUCKET_NAME") or remote.get("bucket_name", ""),
-            "ACCESS_KEY_ID": _get_env_str("S3_ACCESS_KEY_ID") or remote.get("access_key_id", ""),
-            "SECRET_ACCESS_KEY": _get_env_str("S3_SECRET_ACCESS_KEY") or remote.get("secret_access_key", ""),
+            "ACCESS_KEY_ID": _get_secret_str("S3_ACCESS_KEY_ID") or remote.get("access_key_id", ""),
+            "SECRET_ACCESS_KEY": _get_secret_str("S3_SECRET_ACCESS_KEY") or remote.get("secret_access_key", ""),
             "REGION": _get_env_str("S3_REGION") or remote.get("region", ""),
             "RETENTION_DAYS": remote_retention_env if remote_retention_env is not None else remote.get("retention_days", 0),
         },
@@ -417,18 +446,18 @@ def _load_webhook_config(config_data: Dict) -> Dict:
         "WEWORK_WEBHOOK_URL": _get_env_str("WEWORK_WEBHOOK_URL") or wework.get("webhook_url", ""),
         "WEWORK_MSG_TYPE": _get_env_str("WEWORK_MSG_TYPE") or wework.get("msg_type", "markdown"),
         # Telegram
-        "TELEGRAM_BOT_TOKEN": _get_env_str("TELEGRAM_BOT_TOKEN") or telegram.get("bot_token", ""),
+        "TELEGRAM_BOT_TOKEN": _get_secret_str("TELEGRAM_BOT_TOKEN") or telegram.get("bot_token", ""),
         "TELEGRAM_CHAT_ID": _get_env_str("TELEGRAM_CHAT_ID") or telegram.get("chat_id", ""),
         # 邮件
         "EMAIL_FROM": _get_env_str("EMAIL_FROM") or email.get("from", ""),
-        "EMAIL_PASSWORD": _get_env_str("EMAIL_PASSWORD") or email.get("password", ""),
+        "EMAIL_PASSWORD": _get_secret_str("EMAIL_PASSWORD") or email.get("password", ""),
         "EMAIL_TO": _get_env_str("EMAIL_TO") or email.get("to", ""),
         "EMAIL_SMTP_SERVER": _get_env_str("EMAIL_SMTP_SERVER") or email.get("smtp_server", ""),
         "EMAIL_SMTP_PORT": _get_env_str("EMAIL_SMTP_PORT") or email.get("smtp_port", ""),
         # ntfy
         "NTFY_SERVER_URL": _get_env_str("NTFY_SERVER_URL") or ntfy.get("server_url") or "https://ntfy.sh",
         "NTFY_TOPIC": _get_env_str("NTFY_TOPIC") or ntfy.get("topic", ""),
-        "NTFY_TOKEN": _get_env_str("NTFY_TOKEN") or ntfy.get("token", ""),
+        "NTFY_TOKEN": _get_secret_str("NTFY_TOKEN") or ntfy.get("token", ""),
         # Bark
         "BARK_URL": _get_env_str("BARK_URL") or bark.get("url", ""),
         # Slack

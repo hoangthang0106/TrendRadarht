@@ -51,7 +51,7 @@ RUN set -ex && \
     rm -rf /var/lib/apt/lists/*
 
 # 从官方镜像拷贝 uv 二进制
-COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
+COPY --from=ghcr.io/astral-sh/uv:0.13.1 /uv /uvx /bin/
 
 # 先安装依赖（利用 Docker 层缓存）
 COPY pyproject.toml uv.lock ./
@@ -59,7 +59,7 @@ RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync --locked --no-install-project --no-dev
 
 # 再复制项目代码并安装项目本身
-COPY docker/manage.py .
+COPY docker/manage.py .\nCOPY docker/secure_http_server.py ./secure_http_server.py
 COPY trendradar/ ./trendradar/
 RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync --locked --no-dev

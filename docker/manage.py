@@ -450,11 +450,11 @@ def _read_proc_cmdline(pid: int) -> str:
 
 
 def _is_expected_webserver_process(pid: int) -> bool:
-    """检查 pid 是否是当前端口的 http.server 进程。"""
+    """检查 pid 是否是当前端口的受限静态 Web 服务器进程。"""
     cmdline = _read_proc_cmdline(pid)
     if not cmdline:
         return False
-    return "http.server" in cmdline and str(WEBSERVER_PORT) in cmdline
+    return "secure_http_server.py" in cmdline and str(WEBSERVER_PORT) in cmdline
 
 
 def _terminate_webserver_process(pid: int, require_expected: bool = True) -> bool:
@@ -529,9 +529,9 @@ def _cleanup_stale_pid():
 
 
 def start_webserver():
-    """启动 Web 服务器托管 output 目录"""
+    """启动受限 Web 服务器，仅公开 HTML 与 Web 静态资源。"""
     print(f"🌐 启动 Web 服务器 (端口: {WEBSERVER_PORT})...")
-    print(f"  🔒 安全提示：仅提供静态文件访问，限制在 {WEBSERVER_DIR} 目录")
+    print(f"  🔒 Chỉ công khai HTML/Web assets; chặn DB/TXT/config và directory listing trong {WEBSERVER_DIR}")
 
     # 检查是否已经运行
     if Path(WEBSERVER_PID_FILE).exists():
@@ -561,12 +561,16 @@ def start_webserver():
         return
 
     try:
-        # 启动 HTTP 服务器
-        # 使用 --bind 绑定到 0.0.0.0 使容器内部可访问
-        # 工作目录限制在 WEBSERVER_DIR，防止访问其他目录
+        # 启动受限静态服务器：禁止目录浏览，也不会暴露 .db/.txt/.env 等文件
         process = subprocess.Popen(
-            [sys.executable, '-m', 'http.server', str(WEBSERVER_PORT), '--bind', '0.0.0.0'],
-            cwd=WEBSERVER_DIR,
+            [
+                sys.executable,
+                "/app/secure_http_server.py",
+                "--directory", WEBSERVER_DIR,
+                "--port", str(WEBSERVER_PORT),
+                "--bind", "0.0.0.0",
+            ],
+            cwd="/app",
             stdout=subprocess.DEVNULL,
             stderr=subprocess.DEVNULL,
             start_new_session=True
