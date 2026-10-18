@@ -447,7 +447,7 @@ def _load_webhook_config(config_data: Dict) -> Dict:
         "WEWORK_MSG_TYPE": _get_env_str("WEWORK_MSG_TYPE") or wework.get("msg_type", "markdown"),
         # Telegram
         "TELEGRAM_BOT_TOKEN": _get_secret_str("TELEGRAM_BOT_TOKEN") or telegram.get("bot_token", ""),
-        "TELEGRAM_CHAT_ID": _get_env_str("TELEGRAM_CHAT_ID") or telegram.get("chat_id", ""),
+        "TELEGRAM_CHAT_ID": _get_secret_str("TELEGRAM_CHAT_ID") or telegram.get("chat_id", ""),
         # 邮件
         "EMAIL_FROM": _get_env_str("EMAIL_FROM") or email.get("from", ""),
         "EMAIL_PASSWORD": _get_secret_str("EMAIL_PASSWORD") or email.get("password", ""),
@@ -501,7 +501,12 @@ def _print_notification_sources(config: Dict) -> None:
         )
         if valid and count > 0:
             count = min(count, max_accounts)
-            token_source = "环境变量" if os.environ.get("TELEGRAM_BOT_TOKEN") else "配置文件"
+            if os.environ.get("TELEGRAM_BOT_TOKEN"):
+                token_source = "环境变量"
+            elif os.environ.get("TELEGRAM_BOT_TOKEN_FILE"):
+                token_source = "秘密文件"
+            else:
+                token_source = "配置文件"
             notification_sources.append(f"Telegram({token_source}, {count}个账号)")
 
     if config["EMAIL_FROM"] and config["EMAIL_PASSWORD"] and config["EMAIL_TO"]:
