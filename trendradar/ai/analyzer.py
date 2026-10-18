@@ -24,6 +24,7 @@ class AIAnalysisResult:
     rss_insights: str = ""               # RSS 深度洞察
     outlook_strategy: str = ""           # 研判与策略建议
     standalone_summaries: Dict[str, str] = field(default_factory=dict)  # 独立展示区概括 {源ID: 概括}
+    x_drafts: List[Dict[str, str]] = field(default_factory=list)  # 每个热点主题一条独立 X 草稿
 
     # 基础元数据
     raw_response: str = ""               # 原始响应
@@ -280,14 +281,17 @@ class AIAnalyzer:
                         if not title:
                             continue
 
-                        # 来源
+                        # 来源与原文链接
                         source = t.get("source_name", t.get("source", ""))
+                        source_url = t.get("url", "")
 
                         # 构建行
                         if source:
                             line = f"- [{source}] {title}"
                         else:
                             line = f"- {title}"
+                        if source_url:
+                            line += f" | 来源链接:{source_url}"
 
                         # 始终显示简化格式：排名范围 + 时间范围 + 出现次数
                         ranks = t.get("ranks", [])
@@ -337,8 +341,9 @@ class AIAnalyzer:
                         if not title:
                             continue
 
-                        # 来源
+                        # 来源与原文链接
                         source = t.get("source_name", t.get("feed_name", ""))
+                        source_url = t.get("url", "")
 
                         # 发布时间
                         time_display = t.get("time_display", "")
@@ -350,6 +355,8 @@ class AIAnalyzer:
                             line = f"- {title}"
                         if time_display:
                             line += f" | {time_display}"
+                        if source_url:
+                            line += f" | 来源链接:{source_url}"
                         rss_lines.append(line)
 
                         rss_count += 1
@@ -495,7 +502,11 @@ class AIAnalyzer:
 
                 line = f"- {title}"
 
-                # 排名信息
+                # 原文链接与排名信息
+                source_url = item.get("url", "")
+                if source_url:
+                    line += f" | 来源链接:{source_url}"
+
                 ranks = item.get("ranks", [])
                 if ranks:
                     min_rank = min(ranks)
@@ -540,6 +551,9 @@ class AIAnalyzer:
                     continue
 
                 line = f"- {title}"
+                source_url = item.get("url", "")
+                if source_url:
+                    line += f" | 来源链接:{source_url}"
                 published_at = item.get("published_at", "")
                 if published_at:
                     line += f" | {published_at}"
@@ -627,6 +641,22 @@ class AIAnalyzer:
             result.signals = data.get("signals", "")
             result.rss_insights = data.get("rss_insights", "")
             result.outlook_strategy = data.get("outlook_strategy", "")
+
+            # 解析每个主题对应的独立 X 草稿
+            drafts = data.get("x_drafts", [])
+            if isinstance(drafts, list):
+                for item in drafts[:5]:
+                    if not isinstance(item, dict):
+                        continue
+                    topic = str(item.get("topic", "")).strip()
+                    draft_text = str(item.get("draft", "")).strip()
+                    source_url = str(item.get("source_url", "")).strip()
+                    if topic and draft_text:
+                        result.x_drafts.append({
+                            "topic": topic,
+                            "draft": draft_text,
+                            "source_url": source_url,
+                        })
 
             # 解析独立展示区概括
             summaries = data.get("standalone_summaries", {})
