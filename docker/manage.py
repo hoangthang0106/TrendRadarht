@@ -297,9 +297,9 @@ def show_config():
     for var in env_vars:
         value = os.environ.get(var, "未设置")
         # 隐藏敏感信息
-        if var == "BARK_URL" or any(sensitive in var for sensitive in ["WEBHOOK", "TOKEN", "KEY", "SECRET"]):
+        if var in {"BARK_URL", "TELEGRAM_CHAT_ID"} or any(sensitive in var for sensitive in ["WEBHOOK", "TOKEN", "KEY", "SECRET", "PASSWORD"]):
             if value and value != "未设置":
-                masked_value = value[:10] + "***" if len(value) > 10 else "***"
+                masked_value = "***SET***"
                 print(f"  {var}: {masked_value}")
             else:
                 print(f"  {var}: {value}")
@@ -460,7 +460,7 @@ def _is_expected_webserver_process(pid: int) -> bool:
 def _terminate_webserver_process(pid: int, require_expected: bool = True) -> bool:
     """尝试终止 Web 服务器进程。
 
-    require_expected=True 时，仅终止确认是 http.server 的进程，避免误杀。
+    require_expected=True 时，仅终止确认是 secure_http_server.py 的进程，避免误杀。
     """
     try:
         os.kill(pid, 0)
