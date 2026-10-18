@@ -645,7 +645,7 @@ class AIAnalyzer:
             # 解析每个主题对应的独立 X 草稿
             drafts = data.get("x_drafts", [])
             if isinstance(drafts, list):
-                for item in drafts[:5]:
+                for item in drafts[:3]:
                     if not isinstance(item, dict):
                         continue
                     topic = str(item.get("topic", "")).strip()
