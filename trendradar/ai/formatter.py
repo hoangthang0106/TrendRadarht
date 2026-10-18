@@ -123,6 +123,15 @@ def _render_ai_analysis_markdown_like(
             ["**研判策略建议**", _format_list_content(result.outlook_strategy), ""]
         )
 
+    if result.x_drafts:
+        lines.extend(["**可复制的 X 草稿（每个主题独立）**", ""])
+        for index, item in enumerate(result.x_drafts, 1):
+            lines.append(f"{index}. **{item['topic']}**")
+            lines.append(f"> {item['draft']}")
+            if item.get("source_url"):
+                lines.append(f"来源：{item['source_url']}")
+            lines.append("")
+
     if result.standalone_summaries:
         summaries_text = _format_standalone_summaries(
             result.standalone_summaries, *standalone_brackets
@@ -256,6 +265,18 @@ def render_ai_analysis_telegram(result: AIAnalysisResult) -> str:
 
     if result.outlook_strategy:
         lines.extend(["<b>研判策略建议</b>", _escape_html(_format_list_content(result.outlook_strategy)), ""])
+
+    if result.x_drafts:
+        lines.extend(["<b>可复制的 X 草稿（每个主题独立）</b>", ""])
+        for index, item in enumerate(result.x_drafts, 1):
+            topic = _escape_html(item.get("topic", ""))
+            draft_text = _escape_html(item.get("draft", ""))
+            lines.extend([f"<b>{index}. {topic}</b>", f"<pre>{draft_text}</pre>"])
+            source_url = item.get("source_url", "")
+            if source_url.startswith(("https://", "http://")):
+                safe_url = _escape_html(source_url)
+                lines.append(f'Nguồn: <a href="{safe_url}">mở bài gốc</a>')
+            lines.append("")
 
     if result.standalone_summaries:
         summaries_text = _format_standalone_summaries(result.standalone_summaries)
