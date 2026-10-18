@@ -59,7 +59,8 @@ RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync --locked --no-install-project --no-dev
 
 # 再复制项目代码并安装项目本身
-COPY docker/manage.py .\nCOPY docker/secure_http_server.py ./secure_http_server.py
+COPY docker/manage.py .
+COPY docker/secure_http_server.py ./secure_http_server.py
 COPY trendradar/ ./trendradar/
 RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync --locked --no-dev
