@@ -52,6 +52,8 @@ services:
       dockerfile: docker/Dockerfile
     container_name: trendradar
     restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
     depends_on:
       newsnow:
         condition: service_started
@@ -75,6 +77,7 @@ services:
       - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN:-}
       - TELEGRAM_BOT_TOKEN_FILE=${TELEGRAM_BOT_TOKEN_FILE:-}
       - TELEGRAM_CHAT_ID=${TELEGRAM_CHAT_ID:-}
+      - TELEGRAM_CHAT_ID_FILE=${TELEGRAM_CHAT_ID_FILE:-}
       - DINGTALK_WEBHOOK_URL=${DINGTALK_WEBHOOK_URL:-}
       - WEWORK_WEBHOOK_URL=${WEWORK_WEBHOOK_URL:-}
       - WEWORK_MSG_TYPE=${WEWORK_MSG_TYPE:-}
