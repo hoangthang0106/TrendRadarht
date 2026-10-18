@@ -15,7 +15,7 @@ Bản fork này giữ bộ hotlist đa nền tảng của tác giả TrendRadar,
    - `TELEGRAM_CHAT_ID`: chat ID Telegram nhận nháp.
 4. Bấm **Deploy the stack**. Portainer build mã của fork thành image riêng, đồng thời chạy NewsNow nội bộ và tải model Ollama vào Docker volume; lần đầu có thể mất một lúc.
 5. Mở **Containers → trendradar-ollama-init → Logs**. Khi thấy `success`/hoàn tất tải model, mở **trendradar → Logs** để kiểm tra worker.
-6. Trên máy trong mạng LAN, mở `http://IP_UBUNTU:8080` để xem báo cáo.
+6. Trên máy trong mạng LAN, mở `http://IP_UBUNTU:8080` để xem báo cáo và copy nháp X. Chưa cấu hình Telegram thì hệ thống không gửi thông báo đẩy; dùng trang này để xem kết quả.
 
 ### Tạo bot Telegram
 
