@@ -203,3 +203,6 @@ JSON 格式：
 - 使用 Vietnamese 输出分析和 X 草稿，语言简练、准确、自然
 - 6个板块内容不重叠不冗余
 - 若某板块无明显内容，可简写"暂无显著异常"
+- 输出保持短小：core_trends 最多60个越南语词；sentiment_controversy 最多40词；signals 最多50词；rss_insights 最多40词；outlook_strategy 最多3条短句。
+- standalone_summaries 最多写5个最相关来源，每个最多25个越南语词；优先 Douyin/Bilibili、viral 视频和重大突发来源，不要逐源写长报告。
+- x_drafts 只选最值得发布的事件，正文尽量1句且不超过180字符。
