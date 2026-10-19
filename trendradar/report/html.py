@@ -2230,7 +2230,7 @@ def render_html_content(
                 var text = field.value || field.textContent || '';
                 var original = button.textContent;
                 function done() {
-                    button.textContent = '已复制，可粘贴到 X';
+                    button.textContent = 'Đã sao chép — dán vào X';
                     setTimeout(function() { button.textContent = original; }, 1800);
                 }
                 function fallbackCopy() {
@@ -2238,7 +2238,7 @@ def render_html_content(
                     field.select();
                     try {
                         if (document.execCommand('copy')) { done(); }
-                        else { button.textContent = '已选中，请按 Ctrl+C'; }
+                        else { button.textContent = 'Đã chọn nội dung — nhấn Ctrl+C'; }
                     } catch (e) {
                         button.textContent = '已选中，请按 Ctrl+C';
                     }
