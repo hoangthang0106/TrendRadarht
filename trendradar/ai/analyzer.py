@@ -483,19 +483,14 @@ class AIAnalyzer:
         rss_feeds = standalone_data.get("rss_feeds", [])
         selected = {}
         remaining = 24
-        # Prefer country-specific direct YouTube trend feeds and global viral-video RSS.
-        # Chinese-only short-video charts are not treated as worldwide trends.
+        # Only direct video feeds are shown before the regular text hotlists.
         video_platform_ids = set()
         priority_feed_ids = {
-            "youtube-trending-us", "youtube-trending-gb", "youtube-trending-jp",
-            "youtube-trending-kr", "youtube-trending-th", "youtube-trending-in",
-            "youtube-trending-br", "youtube-trending-vn",
-            "reddit-videos", "reddit-funny", "reddit-unexpected", "reddit-viral",
+            "youtube-trending-global", "reddit-viral-clips",
             "google-viral-video", "google-vn-viral-video",
             "google-entertainment", "google-accidents",
             "google-crime-fights", "google-disasters",
         }
-
         def select_sources(sources, kind, predicate, per_source):
             nonlocal remaining
             for index, source in enumerate(sources):
