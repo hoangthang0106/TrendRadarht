@@ -18,6 +18,19 @@ services:
       - JWT_SECRET=
       - PRODUCTHUNT_API_TOKEN=
 
+  youtube-trends:
+    image: trendradarht-youtube-trends:latest
+    build:
+      context: ../youtube-trends
+      dockerfile: Dockerfile
+    container_name: trendradar-youtube-trends
+    restart: unless-stopped
+    expose:
+      - "8000"
+    environment:
+      - YOUTUBE_API_KEY=${YOUTUBE_API_KEY:-}
+      - YOUTUBE_REGIONS=US,GB,JP,KR,TH,IN,BR,VN
+
   ollama:
     image: ollama/ollama:0.40.4
     container_name: trendradar-ollama
@@ -47,7 +60,7 @@ services:
     command: ["ollama pull ${OLLAMA_MODEL:-qwen2.5:3b}"]
 
   trendradar:
-    image: trendradarht:clip-priority
+    image: trendradarht:global-video-country
     build:
       context: ..
       dockerfile: docker/Dockerfile
@@ -60,6 +73,8 @@ services:
         condition: service_started
       ollama-init:
         condition: service_completed_successfully
+      youtube-trends:
+        condition: service_started
 
     ports:
       - "${WEBSERVER_PORT:-8080}:${WEBSERVER_PORT:-8080}"
