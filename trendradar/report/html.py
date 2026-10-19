@@ -2223,6 +2223,33 @@ def render_html_content(
         <script>
             // ===== 浏览器增强功能 =====
 
+            function copyXField(button) {
+                var wrapper = button.parentElement;
+                var field = wrapper ? wrapper.querySelector('textarea') : null;
+                if (!field) return;
+                var text = field.value || field.textContent || '';
+                var original = button.textContent;
+                function done() {
+                    button.textContent = '已复制，可粘贴到 X';
+                    setTimeout(function() { button.textContent = original; }, 1800);
+                }
+                function fallbackCopy() {
+                    field.focus();
+                    field.select();
+                    try {
+                        if (document.execCommand('copy')) { done(); }
+                        else { button.textContent = '已选中，请按 Ctrl+C'; }
+                    } catch (e) {
+                        button.textContent = '已选中，请按 Ctrl+C';
+                    }
+                }
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText(text).then(done).catch(fallbackCopy);
+                } else {
+                    fallbackCopy();
+                }
+            }
+
             function toggleWideMode() {
                 document.body.classList.toggle('wide-mode');
                 var isWide = document.body.classList.contains('wide-mode');
