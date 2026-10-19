@@ -46,7 +46,7 @@ services:
     command: ["ollama pull ${OLLAMA_MODEL:-qwen2.5:3b}"]
 
   trendradar:
-    image: trendradarht:local
+    image: trendradarht:configfix
     build:
       context: ..
       dockerfile: docker/Dockerfile
