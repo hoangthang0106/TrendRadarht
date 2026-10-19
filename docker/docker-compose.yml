@@ -20,6 +20,7 @@ services:
 
   youtube-trends:
     image: trendradarht-youtube-trends:latest
+    pull_policy: build
     build:
       context: ../youtube-trends
       dockerfile: Dockerfile
@@ -61,6 +62,7 @@ services:
 
   trendradar:
     image: trendradarht:global-clip-first
+    pull_policy: build
     build:
       context: ..
       dockerfile: docker/Dockerfile
