@@ -60,7 +60,7 @@ services:
     command: ["ollama pull ${OLLAMA_MODEL:-qwen2.5:3b}"]
 
   trendradar:
-    image: trendradarht:global-video-country
+    image: trendradarht:global-clip-first
     build:
       context: ..
       dockerfile: docker/Dockerfile
