@@ -1424,14 +1424,27 @@ def render_html_content(
                 background: linear-gradient(135deg, #be185d, #9333ea);
             }
             .video-source-links {
-                display: flex; flex-wrap: wrap; gap: 8px; padding: 12px 0 4px;
+                display: grid; gap: 9px; padding: 8px 0 10px;
+                border-bottom: 1px solid #eef0f4; margin-bottom: 10px;
+            }
+            .video-source-group { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+            .video-source-label {
+                flex: 0 0 100%; color: #8991a0; font-size: 10px; font-weight: 800;
+                letter-spacing: .08em; line-height: 1; margin: 2px 0 1px;
             }
             .video-source-links a {
-                display: inline-flex; padding: 7px 12px; border-radius: 999px;
-                background: #f3f4f6; color: #4338ca; font-size: 13px;
-                font-weight: 600; text-decoration: none;
+                display: inline-flex; align-items: center; min-height: 27px;
+                padding: 4px 9px; border: 1px solid #e7e9ef; border-radius: 999px;
+                background: #fff; color: #374151; font-size: 11px; line-height: 1.2;
+                font-weight: 650; text-decoration: none; transition: .15s ease;
             }
-            .video-source-links a:hover { background: #e0e7ff; }
+            .video-source-links a:hover {
+                background: #eef2ff; color: #4338ca; border-color: #c7d2fe;
+                transform: translateY(-1px);
+            }
+            body.dark-mode .video-source-links { border-color: #333947; }
+            body.dark-mode .video-source-links a { background: #202431; color: #dbe2f0; border-color: #343b4a; }
+            body.dark-mode .video-source-links a:hover { background: #302d52; color: #dcd7ff; border-color: #514a86; }
             .video-preview-btn {
                 border: 0; border-radius: 6px; padding: 5px 9px; margin: 4px 0;
                 background: #eef2ff; color: #4338ca; cursor: pointer; font-size: 12px;
@@ -1993,11 +2006,27 @@ def render_html_content(
                         <div class="standalone-section-title">🎬 Clip đang hot</div>
                         <div class="standalone-section-count">{total_count} 条</div>
                     </div>
-                    <nav class="video-source-links" aria-label="Nguồn video">
-                        <a href="https://www.youtube.com/feed/trending" target="_blank" rel="noopener noreferrer">YouTube</a>
-                        <a href="https://www.tiktok.com/explore" target="_blank" rel="noopener noreferrer">TikTok</a>
-                        <a href="https://www.instagram.com/reels/" target="_blank" rel="noopener noreferrer">Instagram Reels</a>
-                        <a href="https://vk.com/clips" target="_blank" rel="noopener noreferrer">VK Clips</a>
+                    <nav class="video-source-links" aria-label="Nguồn video nổi bật">
+                        <div class="video-source-group">
+                            <span class="video-source-label">TRUNG QUỐC</span>
+                            <a href="https://www.douyin.com/" target="_blank" rel="noopener noreferrer" title="Mở Douyin; feed Douyin cũng được lấy tự động bên dưới">Douyin</a>
+                            <a href="https://www.bilibili.com/v/popular/all" target="_blank" rel="noopener noreferrer" title="Mở video phổ biến trên Bilibili">Bilibili</a>
+                            <a href="https://www.kuaishou.com/" target="_blank" rel="noopener noreferrer" title="Mở Kuaishou; feed Kuaishou cũng được lấy tự động bên dưới">Kuaishou</a>
+                            <a href="https://www.iqiyi.com/" target="_blank" rel="noopener noreferrer" title="Mở iQIYI; bảng xếp hạng được lấy tự động bên dưới">iQIYI</a>
+                            <a href="https://v.qq.com/" target="_blank" rel="noopener noreferrer" title="Mở Tencent Video">Tencent Video</a>
+                            <a href="https://channels.weixin.qq.com/" target="_blank" rel="noopener noreferrer" title="Mở cổng WeChat Video Channels. Video hot được duyệt trong ứng dụng WeChat; đây không phải feed trending tự động">WeChat 视频号</a>
+                        </div>
+                        <div class="video-source-group">
+                            <span class="video-source-label">TOÀN CẦU</span>
+                            <a href="https://www.youtube.com/feed/trending" target="_blank" rel="noopener noreferrer">YouTube</a>
+                            <a href="https://www.tiktok.com/explore" target="_blank" rel="noopener noreferrer">TikTok</a>
+                            <a href="https://www.instagram.com/reels/" target="_blank" rel="noopener noreferrer">Instagram Reels</a>
+                            <a href="https://vk.com/clips" target="_blank" rel="noopener noreferrer">VK Clips</a>
+                            <a href="https://www.reddit.com/r/videos+funny+Unexpected+interestingasfuck/hot/" target="_blank" rel="noopener noreferrer" title="Mở cộng đồng clip viral Reddit">Reddit</a>
+                            <a href="https://x.com/explore/tabs/trending" target="_blank" rel="noopener noreferrer">X Trending</a>
+                            <a href="https://www.facebook.com/watch/" target="_blank" rel="noopener noreferrer">Facebook Watch</a>
+                            <a href="https://www.snapchat.com/spotlight" target="_blank" rel="noopener noreferrer">Snapchat Spotlight</a>
+                        </div>
                     </nav>"""
 
         # 生成 tab 栏（2+ 分组时）
