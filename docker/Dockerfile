@@ -75,6 +75,9 @@ RUN sed -i 's/\r$//' /entrypoint.sh.tmp && \
     chmod +x manage.py && \
     mkdir -p /app/config /app/output
 
+# Git-based Portainer stacks may not have repo-relative host paths; ship defaults in the image.
+COPY config/ /app/config/
+
 ENV PYTHONUNBUFFERED=1 \
     CONFIG_PATH=/app/config/config.yaml \
     FREQUENCY_WORDS_PATH=/app/config/frequency_words.txt
