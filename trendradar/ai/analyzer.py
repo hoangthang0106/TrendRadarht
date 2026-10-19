@@ -650,10 +650,12 @@ class AIAnalyzer:
                         continue
                     topic = str(item.get("topic", "")).strip()
                     draft_text = str(item.get("draft", "")).strip()
+                    translation_vi = str(item.get("translation_vi", "")).strip()
                     source_url = str(item.get("source_url", "")).strip()
                     if topic and draft_text:
                         result.x_drafts.append({
                             "topic": topic,
+                            "translation_vi": translation_vi,
                             "draft": draft_text,
                             "source_url": source_url,
                         })
