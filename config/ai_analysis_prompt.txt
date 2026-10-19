@@ -194,7 +194,7 @@ JSON 格式：
   "outlook_strategy": "（按上述板块说明写法输出）",
   "standalone_summaries": {"知乎": "100字概括，优先列前5板块未提及的话题及排名走势", "Hacker News": "100字概括..."},
   "x_drafts": [
-    {"topic": "单一热点主题", "draft": "不超过240字符的越南语草稿", "source_url": "输入中的来源链接"}
+    {"topic": "越南语主题名", "translation_vi": "来源标题或说明的越南语翻译", "draft": "不超过180字符的越南语草稿", "source_url": "输入中的原文链接"}
   ]
 }
 ```
