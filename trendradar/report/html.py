@@ -751,6 +751,63 @@ def render_html_content(
                 overflow: hidden;
             }
 
+            /* Clip-first dashboard: compact cards, visible contrast, full-width source panels. */
+            .standalone-section {
+                margin-top: 12px; padding: 16px; border: 1px solid #dbe3ef;
+                border-radius: 16px; background: #f1f5f9;
+            }
+            .standalone-section-header { margin-bottom: 8px; }
+            .standalone-section-title { color: #172554; font-size: 21px; }
+            .standalone-section-count { color: #475569; }
+            .standalone-group {
+                margin: 8px 0 12px; padding: 12px; border: 1px solid #dbe3ef;
+                border-radius: 12px; background: #fff;
+            }
+            .standalone-header { margin-bottom: 8px; padding-bottom: 6px; }
+            .standalone-section .news-item {
+                margin: 0; padding: 9px 6px; gap: 10px; align-items: flex-start;
+                border-bottom: 1px solid #e9eef5;
+            }
+            .standalone-section .news-item:last-child { border-bottom: 0; }
+            .standalone-section .news-content { min-width: 0; width: 100%; }
+            .standalone-section .news-title { line-height: 1.4; }
+            .standalone-section .news-number { flex: 0 0 28px; }
+            body.wide-mode .standalone-section .standalone-groups-grid { display: block; }
+            .standalone-tab-bar {
+                display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0 12px;
+                overflow: visible; border: 0;
+            }
+            .standalone-tab-bar .tab-btn {
+                flex: 0 0 auto; padding: 7px 11px; border-radius: 999px;
+                background: #e2e8f0; color: #334155; font-size: 13px;
+            }
+            .standalone-tab-bar .tab-btn.active { background: #4f46e5; color: #fff; }
+            .standalone-video-thumb {
+                display: block; width: min(100%, 380px); max-width: 380px;
+                margin: 7px 0; padding: 0; border: 0; border-radius: 10px;
+                overflow: hidden; background: #111827; cursor: pointer;
+            }
+            .standalone-video-thumb img {
+                display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover;
+            }
+            .standalone-video-thumb:hover { outline: 3px solid #a5b4fc; }
+            .video-original-link {
+                display: inline-block; margin: 4px 5px; color: #4338ca;
+                font-size: 12px; font-weight: 700; text-decoration: underline;
+            }
+            .video-copy-btn {
+                border: 1px solid #cbd5e1; border-radius: 6px; padding: 5px 9px;
+                margin: 4px 0; background: #fff; color: #334155; cursor: pointer;
+                font-size: 12px; font-weight: 600;
+            }
+            .video-copy-btn:hover { background: #f1f5f9; }
+            .video-preview-btn { padding: 6px 10px; }
+            @media (max-width: 640px) {
+                .standalone-section { padding: 10px; }
+                .standalone-group { padding: 8px; }
+                .standalone-section .news-item { padding: 8px 2px; }
+            }
+
             /* 独立展示区样式 - 复用热点词汇统计区样式 */
             .standalone-section {
                 margin-top: 32px;
@@ -2034,15 +2091,23 @@ def render_html_content(
                                 </div>
                                 <div class="news-title">"""
 
-                # Show a clickable YouTube thumbnail so the video list is scannable.
-                if "youtube.com/watch?v=" in url:
+                # Render an available poster; YouTube thumbnails can be derived from its video ID.
+                thumb_url = (
+                    item.get("thumbnail") or item.get("cover") or item.get("image")
+                    or item.get("pic") or item.get("cover_url") or ""
+                )
+                if isinstance(thumb_url, dict):
+                    thumb_url = thumb_url.get("url", "")
+                if not thumb_url and "youtube.com/watch?v=" in url:
                     video_id = url.split("youtube.com/watch?v=", 1)[1].split("&", 1)[0]
                     thumb_url = f"https://i.ytimg.com/vi/{video_id}/hqdefault.jpg"
-                    escaped_thumb = html_escape(thumb_url)
+                if thumb_url and url:
+                    escaped_thumb = html_escape(str(thumb_url))
                     escaped_url = html_escape(url)
                     standalone_html += (
-                        f'<a href="{escaped_url}" target="_blank" class="standalone-video-thumb">'
-                        f'<img src="{escaped_thumb}" loading="lazy" alt="Mở video YouTube"></a>'
+                        f'<button type="button" class="standalone-video-thumb video-preview-btn" '
+                        f'data-preview-url="{escaped_url}" aria-label="Xem trước clip">'
+                        f'<img src="{escaped_thumb}" loading="lazy" alt="Ảnh xem trước clip"></button>'
                     )
 
                 # Video title stays as a direct clickable link.
@@ -2050,7 +2115,9 @@ def render_html_content(
                 if url:
                     escaped_url = html_escape(url)
                     standalone_html += f'<a href="{escaped_url}" target="_blank" rel="noopener noreferrer" class="news-link">{escaped_title}</a>'
-                    standalone_html += f' <button type="button" class="video-preview-btn" data-preview-url="{escaped_url}">▶ Xem trước</button>'
+                    standalone_html += f' <button type="button" class="video-preview-btn" data-preview-url="{escaped_url}">▶ Xem clip</button>'
+                    standalone_html += f' <a class="video-original-link" href="{escaped_url}" target="_blank" rel="noopener noreferrer">↗ Mở clip gốc</a>'
+                    standalone_html += f' <button type="button" class="video-copy-btn" data-copy-url="{escaped_url}">Sao chép link</button>'
                 else:
                     standalone_html += escaped_title
 
@@ -2115,7 +2182,9 @@ def render_html_content(
                 if url:
                     escaped_url = html_escape(url)
                     standalone_html += f'<a href="{escaped_url}" target="_blank" rel="noopener noreferrer" class="news-link">{escaped_title}</a>'
-                    standalone_html += f' <button type="button" class="video-preview-btn" data-preview-url="{escaped_url}">▶ Xem trước</button>'
+                    standalone_html += f' <button type="button" class="video-preview-btn" data-preview-url="{escaped_url}">▶ Xem clip</button>'
+                    standalone_html += f' <a class="video-original-link" href="{escaped_url}" target="_blank" rel="noopener noreferrer">↗ Mở clip gốc</a>'
+                    standalone_html += f' <button type="button" class="video-copy-btn" data-copy-url="{escaped_url}">Sao chép link</button>'
                 else:
                     standalone_html += escaped_title
 
@@ -3211,6 +3280,26 @@ def render_html_content(
                 });
                 document.addEventListener('keydown', function(e) {
                     if (e.key === 'Escape') closeVideoPreview();
+                });
+                document.addEventListener('click', function(e) {
+                    var copyButton = e.target.closest('.video-copy-btn');
+                    if (!copyButton) return;
+                    var value = copyButton.getAttribute('data-copy-url') || '';
+                    function copied() {
+                        var oldText = copyButton.textContent;
+                        copyButton.textContent = 'Đã sao chép';
+                        setTimeout(function() { copyButton.textContent = oldText; }, 1400);
+                    }
+                    function fallbackCopy() {
+                        var input = document.createElement('textarea');
+                        input.value = value; input.style.position = 'fixed'; input.style.opacity = '0';
+                        document.body.appendChild(input); input.select();
+                        try { document.execCommand('copy'); copied(); } catch (err) {}
+                        document.body.removeChild(input);
+                    }
+                    if (navigator.clipboard && navigator.clipboard.writeText) {
+                        navigator.clipboard.writeText(value).then(copied).catch(fallbackCopy);
+                    } else fallbackCopy();
                 });
 
                 // 键盘快捷键
