@@ -47,7 +47,7 @@ services:
     command: ["ollama pull ${OLLAMA_MODEL:-qwen2.5:3b}"]
 
   trendradar:
-    image: trendradarht:ollama-timeout-fix
+    image: trendradarht:clip-priority
     build:
       context: ..
       dockerfile: docker/Dockerfile
