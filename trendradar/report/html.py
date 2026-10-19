@@ -3316,7 +3316,7 @@ def render_html_content(
                 })();
             });
         </script>
-        <div id="video-preview-modal" class="video-preview-modal" role="dialog" aria-modal="true" aria-label="Xem trước clip" data-preview-close>
+        <div id="video-preview-modal" class="video-preview-modal" role="dialog" aria-modal="true" aria-label="Xem trước clip">
             <div class="video-preview-dialog">
                 <div class="video-preview-head">
                     <span id="video-preview-title">Xem trước clip</span>
