@@ -1,6 +1,6 @@
 services:
   newsnow:
-    image: ghcr.io/newsnext/newsnow:v0.0.42
+    image: ghcr.io/ourongxing/newsnow:latest
     container_name: trendradar-newsnow
     restart: unless-stopped
     expose:
