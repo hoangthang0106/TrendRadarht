@@ -584,7 +584,7 @@ class AIAnalyzer:
             lines.append("")
 
         standalone_count = sum(len(items) for items in selected.values())
-        return "\\n".join(lines), standalone_count
+        return "\n".join(lines), standalone_count
 
     def _parse_response(self, response: str) -> AIAnalysisResult:
         """解析 AI 响应"""
