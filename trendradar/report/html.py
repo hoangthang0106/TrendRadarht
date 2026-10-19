@@ -1423,6 +1423,44 @@ def render_html_content(
             body.dark-mode .badge-new {
                 background: linear-gradient(135deg, #be185d, #9333ea);
             }
+            .video-source-links {
+                display: flex; flex-wrap: wrap; gap: 8px; padding: 12px 0 4px;
+            }
+            .video-source-links a {
+                display: inline-flex; padding: 7px 12px; border-radius: 999px;
+                background: #f3f4f6; color: #4338ca; font-size: 13px;
+                font-weight: 600; text-decoration: none;
+            }
+            .video-source-links a:hover { background: #e0e7ff; }
+            .video-preview-btn {
+                border: 0; border-radius: 6px; padding: 5px 9px; margin: 4px 0;
+                background: #eef2ff; color: #4338ca; cursor: pointer; font-size: 12px;
+                font-weight: 600;
+            }
+            .video-preview-btn:hover { background: #e0e7ff; }
+            .video-preview-modal {
+                position: fixed; inset: 0; z-index: 9999; display: none;
+                align-items: center; justify-content: center; padding: 18px;
+                background: rgba(15, 23, 42, .78);
+            }
+            .video-preview-modal.open { display: flex; }
+            .video-preview-dialog {
+                width: min(900px, 100%); background: white; border-radius: 12px;
+                overflow: hidden; box-shadow: 0 20px 70px rgba(0,0,0,.4);
+            }
+            .video-preview-head {
+                display: flex; align-items: center; justify-content: space-between;
+                gap: 12px; padding: 12px 16px; font-weight: 700;
+            }
+            .video-preview-close {
+                border: 0; background: #f3f4f6; border-radius: 8px;
+                padding: 7px 11px; cursor: pointer;
+            }
+            .video-preview-frame { width: 100%; aspect-ratio: 16 / 9; border: 0; background: #111; }
+            .video-preview-fallback { padding: 24px; text-align: center; }
+            .video-preview-fallback a { color: #4338ca; font-weight: 700; }
+            body.preview-open { overflow: hidden; }
+
         </style>
     </head>
     <body>
@@ -1860,6 +1898,16 @@ def render_html_content(
         platforms = data.get("platforms", [])
         rss_feeds = data.get("rss_feeds", [])
 
+        # Put direct video hotlists first while retaining every configured text hotlist.
+        video_platform_order = {
+            "bilibili-hot-video": 0, "bilibili-ranking": 1, "douyin": 2,
+            "kuaishou": 3, "iqiyi-hot-ranklist": 4,
+        }
+        platforms = sorted(
+            platforms,
+            key=lambda source: video_platform_order.get(source.get("id", ""), 100)
+        )
+
         if not platforms and not rss_feeds:
             return ""
 
@@ -1885,9 +1933,15 @@ def render_html_content(
         standalone_html = f"""
                 <div class="standalone-section">
                     <div class="standalone-section-header">
-                        <div class="standalone-section-title">独立展示区</div>
+                        <div class="standalone-section-title">🎬 Clip đang hot</div>
                         <div class="standalone-section-count">{total_count} 条</div>
-                    </div>"""
+                    </div>
+                    <nav class="video-source-links" aria-label="Nguồn video">
+                        <a href="https://www.youtube.com/feed/trending" target="_blank" rel="noopener noreferrer">YouTube</a>
+                        <a href="https://www.tiktok.com/explore" target="_blank" rel="noopener noreferrer">TikTok</a>
+                        <a href="https://www.instagram.com/reels/" target="_blank" rel="noopener noreferrer">Instagram Reels</a>
+                        <a href="https://vk.com/clips" target="_blank" rel="noopener noreferrer">VK Clips</a>
+                    </nav>"""
 
         # 生成 tab 栏（2+ 分组时）
         if len(all_groups) >= 2:
@@ -1995,7 +2049,8 @@ def render_html_content(
                 escaped_title = html_escape(title)
                 if url:
                     escaped_url = html_escape(url)
-                    standalone_html += f'<a href="{escaped_url}" target="_blank" class="news-link">{escaped_title}</a>'
+                    standalone_html += f'<a href="{escaped_url}" target="_blank" rel="noopener noreferrer" class="news-link">{escaped_title}</a>'
+                    standalone_html += f' <button type="button" class="video-preview-btn" data-preview-url="{escaped_url}">▶ Xem trước</button>'
                 else:
                     standalone_html += escaped_title
 
@@ -2059,7 +2114,8 @@ def render_html_content(
                 escaped_title = html_escape(title)
                 if url:
                     escaped_url = html_escape(url)
-                    standalone_html += f'<a href="{escaped_url}" target="_blank" class="news-link">{escaped_title}</a>'
+                    standalone_html += f'<a href="{escaped_url}" target="_blank" rel="noopener noreferrer" class="news-link">{escaped_title}</a>'
+                    standalone_html += f' <button type="button" class="video-preview-btn" data-preview-url="{escaped_url}">▶ Xem trước</button>'
                 else:
                     standalone_html += escaped_title
 
@@ -3095,6 +3151,68 @@ def render_html_content(
                 initCollapse();
                 initStandaloneTabs();
 
+                // On-page preview for supported video embeds, with a safe source-link fallback.
+                var previewModal = document.getElementById('video-preview-modal');
+                var previewFrame = document.getElementById('video-preview-frame');
+                var previewFallback = document.getElementById('video-preview-fallback');
+                var previewTitle = document.getElementById('video-preview-title');
+                function closeVideoPreview() {
+                    if (!previewModal) return;
+                    previewModal.classList.remove('open');
+                    document.body.classList.remove('preview-open');
+                    if (previewFrame) previewFrame.src = 'about:blank';
+                }
+                function getVideoEmbedUrl(rawUrl) {
+                    try {
+                        var u = new URL(rawUrl);
+                        var host = u.hostname.toLowerCase().replace(/^www\./, '');
+                        var parts = u.pathname.split('/').filter(Boolean);
+                        if (host === 'youtu.be' && parts[0]) return 'https://www.youtube-nocookie.com/embed/' + encodeURIComponent(parts[0]);
+                        if ((host === 'youtube.com' || host === 'm.youtube.com') && (u.searchParams.get('v') || (parts[0] === 'shorts' && parts[1]))) {
+                            var ytId = u.searchParams.get('v') || parts[1];
+                            return 'https://www.youtube-nocookie.com/embed/' + encodeURIComponent(ytId);
+                        }
+                        if (host === 'bilibili.com' && parts[0] === 'video' && parts[1]) {
+                            var bv = parts[1].match(/^BV[0-9A-Za-z]+$/);
+                            var av = parts[1].match(/^av([0-9]+)$/i);
+                            if (bv) return 'https://player.bilibili.com/player.html?bvid=' + encodeURIComponent(bv[0]) + '&autoplay=0';
+                            if (av) return 'https://player.bilibili.com/player.html?aid=' + encodeURIComponent(av[1]) + '&autoplay=0';
+                        }
+                        if ((host === 'tiktok.com' || host.endsWith('.tiktok.com')) && parts.length >= 3 && parts[1] === 'video') {
+                            return 'https://www.tiktok.com/embed/v2/' + encodeURIComponent(parts[2]);
+                        }
+                        if ((host === 'instagram.com' || host.endsWith('.instagram.com')) && ['reel', 'p', 'tv'].includes(parts[0]) && parts[1]) {
+                            return 'https://www.instagram.com/p/' + encodeURIComponent(parts[1]) + '/embed/';
+                        }
+                    } catch (e) {}
+                    return '';
+                }
+                document.addEventListener('click', function(e) {
+                    var button = e.target.closest('.video-preview-btn');
+                    if (button && previewModal) {
+                        var sourceUrl = button.getAttribute('data-preview-url') || '';
+                        var titleWrap = button.closest('.news-title');
+                        var titleLink = titleWrap && titleWrap.querySelector('.news-link');
+                        if (previewTitle) previewTitle.textContent = titleLink ? titleLink.textContent.trim() : 'Xem trước clip';
+                        var embedUrl = getVideoEmbedUrl(sourceUrl);
+                        if (embedUrl && previewFrame) {
+                            previewFrame.src = embedUrl;
+                            previewFrame.style.display = 'block';
+                            previewFallback.style.display = 'none';
+                        } else {
+                            if (previewFrame) { previewFrame.src = 'about:blank'; previewFrame.style.display = 'none'; }
+                            previewFallback.style.display = 'block';
+                            previewFallback.querySelector('a').href = sourceUrl;
+                        }
+                        previewModal.classList.add('open');
+                        document.body.classList.add('preview-open');
+                    }
+                    if (e.target.closest('[data-preview-close]') || e.target === previewModal) closeVideoPreview();
+                });
+                document.addEventListener('keydown', function(e) {
+                    if (e.key === 'Escape') closeVideoPreview();
+                });
+
                 // 键盘快捷键
                 document.addEventListener('keydown', function(e) {
                     if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
@@ -3198,6 +3316,16 @@ def render_html_content(
                 })();
             });
         </script>
+        <div id="video-preview-modal" class="video-preview-modal" role="dialog" aria-modal="true" aria-label="Xem trước clip" data-preview-close>
+            <div class="video-preview-dialog">
+                <div class="video-preview-head">
+                    <span id="video-preview-title">Xem trước clip</span>
+                    <button type="button" class="video-preview-close" data-preview-close>Đóng ✕</button>
+                </div>
+                <iframe id="video-preview-frame" class="video-preview-frame" title="Xem trước video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" sandbox="allow-scripts allow-same-origin allow-presentation" allowfullscreen></iframe>
+                <div id="video-preview-fallback" class="video-preview-fallback" style="display:none">Nguồn này không cho nhúng preview. <a href="#" target="_blank" rel="noopener noreferrer">Mở clip trên nền tảng</a></div>
+            </div>
+        </div>
     </body>
     </html>
     """
