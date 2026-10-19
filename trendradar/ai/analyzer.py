@@ -483,7 +483,10 @@ class AIAnalyzer:
         rss_feeds = standalone_data.get("rss_feeds", [])
         selected = {}
         remaining = 24
-        video_platform_ids = {"douyin", "bilibili-hot-search"}
+        video_platform_ids = {
+            "bilibili-hot-video", "bilibili-ranking", "douyin", "kuaishou",
+            "bilibili-hot-search", "iqiyi-hot-ranklist", "qqvideo-tv-hotsearch",
+        }
         priority_feed_ids = {
             "google-viral-video", "google-vn-viral-video",
             "google-entertainment", "google-accidents",
