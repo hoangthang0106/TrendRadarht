@@ -40,7 +40,7 @@ def render_html_content(
         rss_items: RSS 统计条目列表（可选）
         rss_new_items: RSS 新增条目列表（可选）
         display_mode: 显示模式 ("keyword"=按关键词分组, "platform"=按平台分组)
-        standalone_data: 独立展示区数据（可选），包含 platforms 和 rss_feeds
+        standalone_data: 🎬 Clip đang hot数据（可选），包含 platforms 和 rss_feeds
         ai_analysis: AI 分析结果对象（可选），AIAnalysisResult 实例
         show_new_section: 是否显示新增热点区域
 
@@ -58,7 +58,7 @@ def render_html_content(
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>热点新闻分析</title>
+        <title>Clip hot & tin đang lên</title>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" integrity="sha512-BNaRQnYJYiPSqHHDb58B0yaPfCu+Wgds8Gp/gU33kqBtgNS4tSPHuGibyoeqMV/TJlSKda6FXzoEyYGjTe+vXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         <style>
             * { box-sizing: border-box; }
@@ -782,6 +782,20 @@ def render_html_content(
             .standalone-group:last-child {
                 margin-bottom: 0;
             }
+            .standalone-video-thumb {
+                display: block;
+                max-width: 420px;
+                margin: 6px 0 10px;
+                border-radius: 10px;
+                overflow: hidden;
+                background: #111827;
+            }
+            .standalone-video-thumb img {
+                display: block;
+                width: 100%;
+                aspect-ratio: 16 / 9;
+                object-fit: cover;
+            }
 
             .standalone-header {
                 display: flex;
@@ -1429,8 +1443,8 @@ def render_html_content(
                         </div>
                     </div>
                 </div>
-                <div class="header-title">热点新闻分析</div>
-                <div class="header-info">"""
+                <div class="header-title">Clip hot &amp; xu hướng</div>
+                <div class="header-info" style="grid-template-columns: repeat(3, minmax(0, 1fr));">"""
 
     # 使用提供的时间函数或默认 datetime.now
     if get_time_func:
@@ -1461,116 +1475,37 @@ def render_html_content(
     rss_source_failed = report_data.get("rss_source_failed", 0)
     rss_source_success = max(0, rss_source_total - rss_source_failed)
 
-    # 1. 报告类型
-    html += f"""
-                    <div class="info-item">
-                        <span class="info-label">报告类型</span>
-                        <span class="info-value">{mode_display}</span>
-                    </div>"""
-
-    # 2. 生成时间
-    html += f"""
-                    <div class="info-item">
-                        <span class="info-label">生成时间</span>
-                        <span class="info-value">{now.strftime("%m-%d %H:%M")}</span>
-                    </div>"""
-
-    # 3. 热榜命中
-    html += f"""
-                    <div class="info-item">
-                        <span class="info-label">热榜命中</span>
-                        <span class="info-value">{hot_news_count} / {hotlist_total}</span>
-                    </div>"""
-
-    # 4. RSS 命中
-    if rss_source_total > 0:
-        rss_value = f"{rss_matched} / {rss_total}"
-    else:
-        rss_value = "未启用"
-    html += f"""
-                    <div class="info-item">
-                        <span class="info-label">RSS 命中</span>
-                        <span class="info-value">{rss_value}</span>
-                    </div>"""
-
-    # 5. 热榜平台
-    if platform_total > 0:
-        platform_value = f"{platform_success}/{platform_total}"
-    else:
-        platform_value = "--"
-    html += f"""
-                    <div class="info-item">
-                        <span class="info-label">热榜平台</span>
-                        <span class="info-value">{platform_value}</span>
-                    </div>"""
-
-    # 6. RSS 源
-    if rss_source_total > 0:
-        rss_source_value = f"{rss_source_success}/{rss_source_total}"
-    else:
-        rss_source_value = "--"
-    html += f"""
-                    <div class="info-item">
-                        <span class="info-label">RSS 源</span>
-                        <span class="info-value">{rss_source_value}</span>
-                    </div>"""
-
-    # 7. 新增热点（热榜新增 + RSS 新增）
-    rss_new_count = sum(len(stat.get("titles", [])) for stat in (rss_new_items or []))
-    total_new = new_count + rss_new_count
-    new_value = f"{new_count} + {rss_new_count}" if total_new > 0 else "0"
-    html += f"""
-                    <div class="info-item">
-                        <span class="info-label">新增热点</span>
-                        <span class="info-value">{new_value}</span>
-                    </div>"""
-
-    # 8. AI 分析
+    # Compact, video-first summary
+    clip_count = 0
+    if standalone_data:
+        clip_count = sum(len(group.get("items", [])) for group in standalone_data.get("platforms", []))
+        clip_count += sum(len(group.get("items", [])) for group in standalone_data.get("rss_feeds", []))
     if ai_analysis and getattr(ai_analysis, "success", False):
-        hotlist_analyzed = getattr(ai_analysis, "hotlist_analyzed", 0)
-        rss_analyzed = getattr(ai_analysis, "rss_analyzed", 0)
-        standalone_analyzed = getattr(ai_analysis, "standalone_analyzed", 0)
-        ai_include_rss = getattr(ai_analysis, "include_rss", True)
-        ai_include_standalone = getattr(ai_analysis, "include_standalone", False)
-
-        ai_parts = [str(hotlist_analyzed)]
-        if ai_include_rss:
-            ai_parts.append(str(rss_analyzed))
-        if ai_include_standalone:
-            ai_parts.append(str(standalone_analyzed))
-        ai_value = " + ".join(ai_parts) if sum(int(p) for p in ai_parts) > 0 else "0"
+        ai_status = "Sẵn sàng"
     elif ai_analysis:
-        if getattr(ai_analysis, "skipped", False):
-            ai_value = "已跳过"
-        else:
-            ai_value = "待配置"
+        ai_status = "Cần kiểm tra"
     else:
-        ai_value = "未启用"
+        ai_status = "Chưa bật"
+
     html += f"""
                     <div class="info-item">
-                        <span class="info-label">AI 分析</span>
-                        <span class="info-value">{ai_value}</span>
-                    </div>"""
-
-    html += """
+                        <span class="info-label">Cập nhật lúc</span>
+                        <span class="info-value">{now.strftime("%d-%m %H:%M")}</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Video đang hot</span>
+                        <span class="info-value">{clip_count}</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">AI bản nháp</span>
+                        <span class="info-value">{ai_status}</span>
+                    </div>
                 </div>
             </div>
 
             <div class="content">
                 <div class="search-bar">
-                    <input type="text" class="search-input" placeholder="搜索新闻标题..." oninput="handleSearch(this.value)">
-                </div>"""
-
-    # 处理失败ID错误信息
-    if report_data["failed_ids"]:
-        html += """
-                <div class="error-section">
-                    <div class="error-title">⚠️ 请求失败的平台</div>
-                    <ul class="error-list">"""
-        for id_value in report_data["failed_ids"]:
-            html += f'<li class="error-item">{html_escape(id_value)}</li>'
-        html += """
-                    </ul>
+                    <input type="text" class="search-input" placeholder="Tìm tiêu đề video hoặc tin..." oninput="handleSearch(this.value)">
                 </div>"""
 
     # 生成热点词汇统计部分的HTML
@@ -2045,7 +1980,18 @@ def render_html_content(
                                 </div>
                                 <div class="news-title">"""
 
-                # 标题和链接（复用 news-link 样式）
+                # Show a clickable YouTube thumbnail so the video list is scannable.
+                if "youtube.com/watch?v=" in url:
+                    video_id = url.split("youtube.com/watch?v=", 1)[1].split("&", 1)[0]
+                    thumb_url = f"https://i.ytimg.com/vi/{video_id}/hqdefault.jpg"
+                    escaped_thumb = html_escape(thumb_url)
+                    escaped_url = html_escape(url)
+                    standalone_html += (
+                        f'<a href="{escaped_url}" target="_blank" class="standalone-video-thumb">'
+                        f'<img src="{escaped_thumb}" loading="lazy" alt="Mở video YouTube"></a>'
+                    )
+
+                # Video title stays as a direct clickable link.
                 escaped_title = html_escape(title)
                 if url:
                     escaped_url = html_escape(url)
@@ -2182,6 +2128,17 @@ def render_html_content(
                 content = add_section_divider(content)
             html += content
             has_previous_content = True
+
+    if report_data.get("failed_ids"):
+        html += """
+                <div class="error-section">
+                    <div class="error-title">⚠️ Nguồn lỗi (xem sau danh sách clip)</div>
+                    <ul class="error-list">"""
+        for id_value in report_data.get("failed_ids", []):
+            html += f'<li class="error-item">{html_escape(id_value)}</li>'
+        html += """
+                    </ul>
+                </div>"""
 
     html += """
             </div>
