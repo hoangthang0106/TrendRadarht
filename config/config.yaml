@@ -333,7 +333,7 @@ display:
   # 独立展示区：将指定平台/RSS 完整展示，不受关键词过滤
   # 推送展示由 regions.standalone 控制，AI 分析由 ai_analysis.include_standalone 控制
   standalone:
-    platforms: []
+    platforms: ["bilibili-hot-video", "bilibili-ranking", "douyin", "kuaishou", "iqiyi-hot-ranklist"]
     rss_feeds: ["youtube-trending-global", "reddit-viral-clips"]
     max_items: 20                                # Giữ bản tin gọn để AI tạo draft nhanh
 
