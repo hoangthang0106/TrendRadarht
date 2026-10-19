@@ -483,11 +483,14 @@ class AIAnalyzer:
         rss_feeds = standalone_data.get("rss_feeds", [])
         selected = {}
         remaining = 24
-        video_platform_ids = {
-            "bilibili-hot-video", "bilibili-ranking", "douyin", "kuaishou",
-            "bilibili-hot-search", "iqiyi-hot-ranklist", "qqvideo-tv-hotsearch",
-        }
+        # Prefer country-specific direct YouTube trend feeds and global viral-video RSS.
+        # Chinese-only short-video charts are not treated as worldwide trends.
+        video_platform_ids = set()
         priority_feed_ids = {
+            "youtube-trending-us", "youtube-trending-gb", "youtube-trending-jp",
+            "youtube-trending-kr", "youtube-trending-th", "youtube-trending-in",
+            "youtube-trending-br", "youtube-trending-vn",
+            "reddit-videos", "reddit-funny", "reddit-unexpected", "reddit-viral",
             "google-viral-video", "google-vn-viral-video",
             "google-entertainment", "google-accidents",
             "google-crime-fights", "google-disasters",
