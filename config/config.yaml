@@ -62,7 +62,7 @@ schedule:
 #     只要 api_url 不是你自己部署的实例，都推荐配置 expected_domain
 # ===============================================================
 platforms:
-  enabled: false                        # Prefer regional video sources; disable default China-focused NewsNow list
+  enabled: true                         # Keep original hotlists; video feeds appear above them
   api_url: ""                            # 热榜数据 API 地址（留空使用默认地址）
                                         # 如果你自行部署了 newsnow，填入你的地址，如: https://your-domain.com/api/s
   sources:
@@ -220,45 +220,15 @@ rss:
       name: "Clip viral / hài / gây sốc (Việt Nam)"
       url: "https://news.google.com/rss/search?q=clip+h%C3%A0i+OR+clip+viral+OR+video+g%C3%A2y+s%E1%BB%91c+OR+camera+ghi+l%E1%BA%A1i+when%3A1d&hl=vi-VN&gl=VN&ceid=VN%3Avi"
 
-    # YouTube 各国家/地区热门视频（官方 Data API，直接打开视频）
-    - id: "youtube-trending-us"
-      name: "YouTube 热门视频 / 美国"
-      url: "http://youtube-trends:8000/rss/US"
-    - id: "youtube-trending-gb"
-      name: "YouTube 热门视频 / 英国"
-      url: "http://youtube-trends:8000/rss/GB"
-    - id: "youtube-trending-jp"
-      name: "YouTube 热门视频 / 日本"
-      url: "http://youtube-trends:8000/rss/JP"
-    - id: "youtube-trending-kr"
-      name: "YouTube 热门视频 / 韩国"
-      url: "http://youtube-trends:8000/rss/KR"
-    - id: "youtube-trending-th"
-      name: "YouTube 热门视频 / 泰国"
-      url: "http://youtube-trends:8000/rss/TH"
-    - id: "youtube-trending-in"
-      name: "YouTube 热门视频 / Ấn Độ"
-      url: "http://youtube-trends:8000/rss/IN"
-    - id: "youtube-trending-br"
-      name: "YouTube 热门视频 / Brazil"
-      url: "http://youtube-trends:8000/rss/BR"
-    - id: "youtube-trending-vn"
-      name: "YouTube 热门视频 / Việt Nam"
-      url: "http://youtube-trends:8000/rss/VN"
+    # Combined YouTube video chart across countries (direct links to original clips)
+    - id: "youtube-trending-global"
+      name: "YouTube clip hot / 8 countries"
+      url: "http://youtube-trends:8000/rss/all"
 
-    # Reddit public clip/video trends (links open the original post)
-    - id: "reddit-videos"
-      name: "Reddit / Videos"
-      url: "https://www.reddit.com/r/videos/hot.rss?limit=25"
-    - id: "reddit-funny"
-      name: "Reddit / Funny"
-      url: "https://www.reddit.com/r/funny/hot.rss?limit=25"
-    - id: "reddit-unexpected"
-      name: "Reddit / Unexpected"
-      url: "https://www.reddit.com/r/Unexpected/hot.rss?limit=25"
-    - id: "reddit-viral"
-      name: "Reddit / Viral"
-      url: "https://www.reddit.com/r/interestingasfuck/hot.rss?limit=25"
+    # Reddit viral video posts, original post links
+    - id: "reddit-viral-clips"
+      name: "Reddit viral clips"
+      url: "https://www.reddit.com/r/videos+funny+Unexpected+interestingasfuck/hot.rss?limit=50"
 
     # 自定义源示例
     # - id: "custom-feed"
@@ -364,7 +334,7 @@ display:
   # 推送展示由 regions.standalone 控制，AI 分析由 ai_analysis.include_standalone 控制
   standalone:
     platforms: []
-    rss_feeds: ["youtube-trending-us", "youtube-trending-gb", "youtube-trending-jp", "youtube-trending-kr", "youtube-trending-th", "youtube-trending-in", "youtube-trending-br", "youtube-trending-vn", "reddit-videos", "reddit-funny", "reddit-unexpected", "reddit-viral", "google-viral-video", "google-vn-viral-video", "google-entertainment", "google-accidents", "google-crime-fights", "google-disasters", "google-world", "google-politics", "google-sports", "google-vn-social"]
+    rss_feeds: ["youtube-trending-global", "reddit-viral-clips"]
     max_items: 20                                # Giữ bản tin gọn để AI tạo draft nhanh
 
 
