@@ -197,6 +197,14 @@ rss:
       name: "Việt Nam / giải trí / mạng xã hội"
       url: "https://news.google.com/rss/search?q=gi%E1%BA%A3i+tr%C3%AD+OR+ng%C6%B0%E1%BB%9Di+n%E1%BB%95i+ti%E1%BA%BFng+OR+m%E1%BA%A1ng+x%C3%A3+h%E1%BB%99i+when%3A1d&hl=vi-VN&gl=VN&ceid=VN%3Avi"
 
+    - id: "google-viral-video"
+      name: "Clip viral / hài / gây sốc (thế giới)"
+      url: "https://news.google.com/rss/search?q=viral+video+OR+funny+video+OR+shocking+video+OR+caught+on+camera+when%3A1d&hl=en-US&gl=US&ceid=US%3Aen"
+
+    - id: "google-vn-viral-video"
+      name: "Clip viral / hài / gây sốc (Việt Nam)"
+      url: "https://news.google.com/rss/search?q=clip+h%C3%A0i+OR+clip+viral+OR+video+g%C3%A2y+s%E1%BB%91c+OR+camera+ghi+l%E1%BA%A1i+when%3A1d&hl=vi-VN&gl=VN&ceid=VN%3Avi"
+
     # 自定义源示例
     # - id: "custom-feed"
     #   name: "自定义源"
@@ -300,8 +308,8 @@ display:
   # 独立展示区：将指定平台/RSS 完整展示，不受关键词过滤
   # 推送展示由 regions.standalone 控制，AI 分析由 ai_analysis.include_standalone 控制
   standalone:
-    platforms: ["toutiao", "baidu", "wallstreetcn-hot", "thepaper", "bilibili-hot-search", "cls-hot", "ifeng", "tieba", "weibo", "douyin", "zhihu"]
-    rss_feeds: ["hacker-news", "yahoo-finance", "google-world", "google-politics", "google-economy", "google-investment", "google-tech-science", "google-sports", "google-entertainment", "google-accidents", "google-crime-fights", "google-disasters", "google-vn-general", "google-vn-economy", "google-vn-accidents", "google-vn-social"]
+    platforms: ["douyin", "bilibili-hot-search", "weibo", "toutiao", "baidu", "wallstreetcn-hot", "thepaper", "cls-hot", "ifeng", "tieba", "zhihu"]
+    rss_feeds: ["google-viral-video", "google-vn-viral-video", "hacker-news", "yahoo-finance", "google-world", "google-politics", "google-economy", "google-investment", "google-tech-science", "google-sports", "google-entertainment", "google-accidents", "google-crime-fights", "google-disasters", "google-vn-general", "google-vn-economy", "google-vn-accidents", "google-vn-social"]
     max_items: 20                                # Giữ bản tin gọn để AI tạo draft nhanh
 
 
