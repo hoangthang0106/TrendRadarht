@@ -31,15 +31,19 @@ case "${RUN_MODE:-cron}" in
         exit 1
     fi
 
-    # 立即执行一次（如果配置了）
-    if [ "${IMMEDIATE_RUN:-false}" = "true" ]; then
-        echo "▶️ 立即执行一次"
-        python -m trendradar
-    fi
-
-    # 启动 Web 服务器
+    # 启动 Web 服务器，先保证报告页面可访问
     echo "🌐 启动 Web 服务器..."
     python manage.py start_webserver
+
+    # 立即执行一次（如果配置了）；采集失败不应导致整个容器退出
+    if [ "${IMMEDIATE_RUN:-false}" = "true" ]; then
+        echo "▶️ 立即执行一次"
+        if python -m trendradar; then
+            echo "✅ 首次采集完成"
+        else
+            echo "⚠️ 首次采集失败；Web 服务器和定时任务继续运行"
+        fi
+    fi
 
     echo "⏰ 启动supercronic: $CRON_EXPR"
     echo "🎯 supercronic 将作为 PID 1 运行"
