@@ -78,9 +78,24 @@ platforms:
     - id: "thepaper"
       name: "澎湃新闻"
       expected_domain: "thepaper.cn"
-    - id: "bilibili-hot-search"
-      name: "bilibili 热搜"
+    - id: "bilibili-hot-video"
+      name: "Bilibili 热门视频（直达视频）"
       expected_domain: "bilibili.com"
+    - id: "bilibili-ranking"
+      name: "Bilibili 视频排行榜（直达视频）"
+      expected_domain: "bilibili.com"
+    - id: "bilibili-hot-search"
+      name: "Bilibili 热搜"
+      expected_domain: "bilibili.com"
+    - id: "kuaishou"
+      name: "快手热门视频"
+      expected_domain: "kuaishou.com"
+    - id: "iqiyi-hot-ranklist"
+      name: "爱奇艺热播视频"
+      expected_domain: "iqiyi.com"
+    - id: "qqvideo-tv-hotsearch"
+      name: "腾讯视频热搜"
+      expected_domain: "qq.com"
     - id: "cls-hot"
       name: "财联社热门"
       expected_domain: "cls.cn"
@@ -308,7 +323,7 @@ display:
   # 独立展示区：将指定平台/RSS 完整展示，不受关键词过滤
   # 推送展示由 regions.standalone 控制，AI 分析由 ai_analysis.include_standalone 控制
   standalone:
-    platforms: ["douyin", "bilibili-hot-search", "weibo", "toutiao", "baidu", "wallstreetcn-hot", "thepaper", "cls-hot", "ifeng", "tieba", "zhihu"]
+    platforms: ["bilibili-hot-video", "bilibili-ranking", "douyin", "kuaishou", "bilibili-hot-search", "iqiyi-hot-ranklist", "qqvideo-tv-hotsearch", "weibo", "toutiao", "baidu", "wallstreetcn-hot", "thepaper", "cls-hot", "ifeng", "tieba", "zhihu"]
     rss_feeds: ["google-viral-video", "google-vn-viral-video", "hacker-news", "yahoo-finance", "google-world", "google-politics", "google-economy", "google-investment", "google-tech-science", "google-sports", "google-entertainment", "google-accidents", "google-crime-fights", "google-disasters", "google-vn-general", "google-vn-economy", "google-vn-accidents", "google-vn-social"]
     max_items: 20                                # Giữ bản tin gọn để AI tạo draft nhanh
 
