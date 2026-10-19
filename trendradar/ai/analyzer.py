@@ -484,7 +484,10 @@ class AIAnalyzer:
         selected = {}
         remaining = 24
         # Only direct video feeds are shown before the regular text hotlists.
-        video_platform_ids = set()
+        video_platform_ids = {
+            "bilibili-hot-video", "bilibili-ranking", "douyin",
+            "kuaishou", "iqiyi-hot-ranklist",
+        }
         priority_feed_ids = {
             "youtube-trending-global", "reddit-viral-clips",
             "google-viral-video", "google-vn-viral-video",
@@ -507,11 +510,11 @@ class AIAnalyzer:
         # 保留更多短视频热榜与 viral/突发 RSS，其他来源少量抽样。
         select_sources(
             platforms, "platform",
-            lambda source: source.get("id", "") in video_platform_ids, 6
+            lambda source: source.get("id", "") in video_platform_ids, 3
         )
         select_sources(
             rss_feeds, "rss",
-            lambda source: source.get("id", "") in priority_feed_ids, 2
+            lambda source: source.get("id", "") in priority_feed_ids, 3
         )
         select_sources(
             platforms, "platform",
