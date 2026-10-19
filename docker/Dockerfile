@@ -51,7 +51,7 @@ RUN set -ex && \
     rm -rf /var/lib/apt/lists/*
 
 # 从官方镜像拷贝 uv 二进制
-COPY --from=ghcr.io/astral-sh/uv:0.13.1 /uv /uvx /bin/
+COPY --from=docker.io/astral/uv:0.13.1 /uv /uvx /bin/
 
 # 先安装依赖（利用 Docker 层缓存）
 COPY pyproject.toml uv.lock ./
