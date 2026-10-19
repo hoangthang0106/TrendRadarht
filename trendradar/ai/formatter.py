@@ -376,16 +376,27 @@ def render_ai_analysis_html_rich(result: AIAnalysisResult) -> str:
         drafts_html = ""
         for index, item in enumerate(result.x_drafts, 1):
             topic = _escape_html(item.get("topic", ""))
+            translation_vi = _escape_html(item.get("translation_vi", ""))
             draft_text = _escape_html(item.get("draft", ""))
             source_url = item.get("source_url", "")
             source_html = ""
             if source_url.startswith(("https://", "http://")):
                 safe_url = _escape_html(source_url)
                 source_html = f'<p>来源：<a href="{safe_url}" target="_blank" rel="noopener noreferrer">打开原文</a></p>'
+            translation_html = ""
+            if translation_vi:
+                translation_html = (
+                    f'<div style="margin:8px 0"><label style="display:block;font-weight:700;margin-bottom:4px">Dịch nội dung nguồn sang tiếng Việt</label>'
+                    f'<textarea readonly rows="3" style="box-sizing:border-box;width:100%;padding:10px;border:1px solid #cbd5e1;border-radius:8px;background:#f8fafc;color:#0f172a">{translation_vi}</textarea>'
+                    f'<button type="button" onclick="copyXField(this)" style="margin-top:6px;padding:8px 12px;border:0;border-radius:7px;background:#475569;color:white;font-weight:700;cursor:pointer">Sao chép bản dịch</button></div>'
+                )
             drafts_html += (
                 f'<div class="ai-block">'
                 f'<div class="ai-block-title">{index}. {topic}</div>'
-                f'<pre style="white-space: pre-wrap">{draft_text}</pre>'
+                f'{translation_html}'
+                f'<div style="margin:8px 0"><label style="display:block;font-weight:700;margin-bottom:4px">Bản nháp tiếng Việt để đăng X</label>'
+                f'<textarea readonly rows="3" style="box-sizing:border-box;width:100%;padding:10px;border:1px solid #93c5fd;border-radius:8px;background:#eff6ff;color:#0f172a">{draft_text}</textarea>'
+                f'<button type="button" onclick="copyXField(this)" style="margin-top:6px;padding:9px 14px;border:0;border-radius:7px;background:#2563eb;color:white;font-weight:700;cursor:pointer">Sao chép bản nháp đăng X</button></div>'
                 f'{source_html}</div>'
             )
         ai_html += f"""
