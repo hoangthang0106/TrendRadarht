@@ -1784,6 +1784,32 @@ def render_html_content(
                 .standalone-group { padding: 9px; }
                 .video-source-label { flex-basis: 100%; }
             }
+
+            /* Use the complete canvas for both filtered and all-clips views. */
+            .search-bar { width: 100%; max-width: none; padding-bottom: 10px; }
+            .search-input { display: block; width: 100%; max-width: none; }
+            .content { display: flex; flex-direction: column; gap: 10px; }
+            .content > .search-bar, .content > .tab-bar-wrapper, .content > .word-group,
+            .content > .new-section, .content > .standalone-section { width: 100%; box-sizing: border-box; }
+            .content > .standalone-section { margin-top: 0; }
+            /* A selected platform fills the full row; clips then use two balanced columns. */
+            .standalone-groups-grid:has(> .standalone-group[style*="display: none"]) > .standalone-group:not([style*="display: none"]) {
+                grid-column: 1 / -1;
+                display: grid;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 0 12px;
+            }
+            .standalone-groups-grid:has(> .standalone-group[style*="display: none"]) > .standalone-group:not([style*="display: none"]) > .standalone-header {
+                grid-column: 1 / -1;
+            }
+            .standalone-groups-grid:has(> .standalone-group[style*="display: none"]) > .standalone-group:not([style*="display: none"]) > .news-item {
+                min-width: 0; margin: 0; border-bottom: 1px solid #edf0f5;
+            }
+            @media (max-width: 820px) {
+                .standalone-groups-grid:has(> .standalone-group[style*="display: none"]) > .standalone-group:not([style*="display: none"]) {
+                    grid-template-columns: minmax(0, 1fr);
+                }
+            }
         </style>
     </head>
     <body>
