@@ -54,7 +54,7 @@ def render_html_content(
 
     html = """
     <!DOCTYPE html>
-    <html>
+    <html lang="en">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -1693,6 +1693,40 @@ def render_html_content(
                 .video-source-group { gap: 5px; }
                 .video-source-links a { min-height: 25px; padding: 4px 7px; font-size: 10px; }
             }
+        
+            /* Compact, readable clip-first report */
+            body { padding: 14px; background: #f3f6fb; color: #172033; }
+            .container { max-width: 760px; border-radius: 16px; }
+            body.wide-mode .container { max-width: 1440px; }
+            .header { padding: 24px clamp(18px, 3vw, 40px); text-align: left; }
+            .header-title { text-align: left; font-size: clamp(23px, 3vw, 30px); margin-bottom: 14px; }
+            .header-info { gap: 10px; }
+            .header-info .info-item { text-align: left; }
+            .content { padding: 22px clamp(16px, 3vw, 36px); }
+            .word-group, .standalone-group { margin-bottom: 22px; }
+            .word-header, .standalone-header { margin-bottom: 10px; }
+            .standalone-section { margin-top: 20px; padding-top: 16px; }
+            .standalone-section-header { margin-bottom: 10px; }
+            .video-source-links { gap: 6px; padding: 6px 0 10px; margin-bottom: 10px; }
+            .video-source-group { gap: 7px; }
+            .video-source-label { flex: 0 0 84px; margin: 0; line-height: 1.3; }
+            .video-source-links a { min-height: 32px; padding: 6px 11px; font-size: 12px; }
+            .news-item { margin: 0 0 8px; padding: 12px 14px; border: 1px solid #e8edf5; border-radius: 12px; background: #fff; align-items: flex-start; }
+            .news-item:last-child { border-bottom: 1px solid #e8edf5; }
+            .news-number { margin-top: 0; }
+            .news-item:hover { border-color: #cbd5e1; box-shadow: 0 3px 12px rgba(15, 23, 42, .05); }
+            .video-preview-btn, .video-copy-btn, .video-original-link { min-height: 32px; }
+            @media (max-width: 600px) {
+                body { padding: 8px; }
+                .container { border-radius: 12px; }
+                .header { padding: 22px 16px 18px; }
+                .content { padding: 16px 12px; }
+                .video-source-label { flex-basis: 100%; margin: 2px 0; }
+                .video-source-links { gap: 8px; }
+                .video-source-links a { min-height: 34px; }
+                .news-item { padding: 11px; }
+            }
+
         </style>
     </head>
     <body>
