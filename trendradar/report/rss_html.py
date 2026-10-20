@@ -2,7 +2,7 @@
 """
 RSS HTML 报告渲染模块
 
-提供 RSS 订阅内容的 HTML 格式报告生成功能
+提供 RSS Feed的 HTML 格式报告生成功能
 """
 
 from datetime import datetime
@@ -21,7 +21,7 @@ def render_rss_html_content(
     """渲染 RSS HTML 内容
 
     Args:
-        rss_items: RSS 条目列表，每个条目包含:
+        rss_items: RSS items列表，每个items包含:
             - title: 标题
             - feed_id: RSS 源 ID
             - feed_name: RSS 源名称
@@ -29,7 +29,7 @@ def render_rss_html_content(
             - published_at: 发布时间
             - summary: 摘要（可选）
             - author: 作者（可选）
-        total_count: 条目总数
+        total_count: items总数
         feeds_info: RSS 源 ID 到名称的映射
         get_time_func: 获取当前时间的函数（可选，默认使用 datetime.now）
 
@@ -38,11 +38,11 @@ def render_rss_html_content(
     """
     html = """
     <!DOCTYPE html>
-    <html>
+    <html lang="en">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>RSS 订阅内容</title>
+        <title>RSS Feed</title>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" integrity="sha512-BNaRQnYJYiPSqHHDb58B0yaPfCu+Wgds8Gp/gU33kqBtgNS4tSPHuGibyoeqMV/TJlSKda6FXzoEyYGjTe+vXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         <style>
             * { box-sizing: border-box; }
@@ -287,18 +287,38 @@ def render_rss_html_content(
                     width: 100%;
                 }
             }
-        </style>
+        
+        /* English, compact responsive RSS report */
+        body { padding: 14px; background: #f3f6fb; color: #172033; }
+        .container { max-width: 1040px; border-radius: 16px; }
+        .header { padding: 24px clamp(18px, 3vw, 40px); text-align: left; }
+        .header-title { text-align: left; font-size: clamp(23px, 3vw, 30px); }
+        .header-info { gap: 10px; }
+        .content { padding: 22px clamp(16px, 3vw, 36px); }
+        .feed-group { margin-bottom: 18px; }
+        .rss-item { padding: 12px 14px; margin: 0 0 8px; border: 1px solid #e8edf5; border-radius: 12px; background: #fff; }
+        .rss-item:last-child { margin-bottom: 0; }
+        .rss-link { line-height: 1.5; }
+        @media (max-width: 600px) {
+            body { padding: 8px; }
+            .container { border-radius: 12px; }
+            .header { padding: 22px 16px 18px; }
+            .content { padding: 16px 12px; }
+            .rss-item { padding: 11px; }
+        }
+
+    </style>
     </head>
     <body>
         <div class="container">
             <div class="header">
                 <div class="save-buttons">
-                    <button class="save-btn" onclick="saveAsImage()">保存为图片</button>
+                    <button class="save-btn" onclick="saveAsImage()">Export as image</button>
                 </div>
-                <div class="header-title">RSS 订阅内容</div>
+                <div class="header-title">RSS Feed</div>
                 <div class="header-info">
                     <div class="info-item">
-                        <span class="info-label">订阅条目</span>
+                        <span class="info-label">Feed items</span>
                         <span class="info-value">"""
 
     html += f"{total_count} 条"
@@ -306,7 +326,7 @@ def render_rss_html_content(
     html += """</span>
                     </div>
                     <div class="info-item">
-                        <span class="info-label">生成时间</span>
+                        <span class="info-label">Generated</span>
                         <span class="info-value">"""
 
     # 使用提供的时间函数或默认 datetime.now
@@ -395,9 +415,9 @@ def render_rss_html_content(
 
             <div class="footer">
                 <div class="footer-content">
-                    由 <span class="project-name">TrendRadar</span> 生成 ·
+                    Generated with <span class="project-name">TrendRadar</span> ·
                     <a href="https://github.com/sansan0/TrendRadar" target="_blank" class="footer-link">
-                        GitHub 开源项目
+                        Open-source project on GitHub
                     </a>
                 </div>
             </div>
@@ -409,7 +429,7 @@ def render_rss_html_content(
                 const originalText = button.textContent;
 
                 try {
-                    button.textContent = '生成中...';
+                    button.textContent = 'Generating...';
                     button.disabled = true;
                     window.scrollTo(0, 0);
 
@@ -445,7 +465,7 @@ def render_rss_html_content(
 
                     const link = document.createElement('a');
                     const now = new Date();
-                    const filename = `TrendRadar_RSS订阅_${now.getFullYear()}${String(now.getMonth() + 1).padStart(2, '0')}${String(now.getDate()).padStart(2, '0')}_${String(now.getHours()).padStart(2, '0')}${String(now.getMinutes()).padStart(2, '0')}.png`;
+                    const filename = `TrendRadar_RSS_Feed_${now.getFullYear()}${String(now.getMonth() + 1).padStart(2, '0')}${String(now.getDate()).padStart(2, '0')}_${String(now.getHours()).padStart(2, '0')}${String(now.getMinutes()).padStart(2, '0')}.png`;
 
                     link.download = filename;
                     link.href = canvas.toDataURL('image/png', 1.0);
@@ -454,7 +474,7 @@ def render_rss_html_content(
                     link.click();
                     document.body.removeChild(link);
 
-                    button.textContent = '保存成功!';
+                    button.textContent = 'Saved!';
                     setTimeout(() => {
                         button.textContent = originalText;
                         button.disabled = false;
@@ -463,7 +483,7 @@ def render_rss_html_content(
                 } catch (error) {
                     const buttons = document.querySelector('.save-buttons');
                     buttons.style.visibility = 'visible';
-                    button.textContent = '保存失败';
+                    button.textContent = 'Save failed';
                     setTimeout(() => {
                         button.textContent = originalText;
                         button.disabled = false;
