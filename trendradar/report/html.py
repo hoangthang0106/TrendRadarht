@@ -2488,7 +2488,7 @@ def render_html_content(
                     <div class="tip-row"><span>Search</span><span class="tip-key">/</span></div>
                     <div class="tip-row"><span>Previous tab</span><span class="tip-key">←</span></div>
                     <div class="tip-row"><span>Next tab</span><span class="tip-key">→</span></div>
-                    <div class="tip-row"><span>Click a number to copy its title and link</span><span class="tip-key">点击</span></div>
+                    <div class="tip-row"><span>Click a number to copy its title and link</span><span class="tip-key">Click</span></div>
                 </div>
             </button>
         </div>
@@ -3057,7 +3057,7 @@ def render_html_content(
                         segments.push(currentSegment);
                     }
 
-                    button.textContent = `生成中 (0/${segments.length})...`;
+                    button.textContent = `Generating (0/${segments.length})...`;
 
                     // 隐藏保存按钮
                     const buttons = document.querySelector('.save-buttons');
@@ -3067,7 +3067,7 @@ def render_html_content(
                     const images = [];
                     for (let i = 0; i < segments.length; i++) {
                         const segment = segments[i];
-                        button.textContent = `生成中 (${i + 1}/${segments.length})...`;
+                        button.textContent = `Generating (${i + 1}/${segments.length})...`;
 
                         // 创建临时容器用于截图
                         const tempContainer = document.createElement('div');
