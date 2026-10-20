@@ -321,7 +321,7 @@ def render_rss_html_content(
                         <span class="info-label">Feed items</span>
                         <span class="info-value">"""
 
-    html += f"{total_count} 条"
+    html += f"{total_count} items"
 
     html += """</span>
                     </div>
