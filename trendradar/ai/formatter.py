@@ -313,16 +313,16 @@ def render_ai_analysis_html_rich(result: AIAnalysisResult) -> str:
                 <div class="ai-section">
                     <div class="ai-info">ℹ️ {_escape_html(str(result.error))}</div>
                 </div>"""
-        error_msg = result.error or "未知错误"
+        error_msg = result.error or "Unknown error"
         return f"""
                 <div class="ai-section">
-                    <div class="ai-warning">AI 分析失败: {_escape_html(str(error_msg))}</div>
+                    <div class="ai-warning">AI analysis failed: {_escape_html(str(error_msg))}</div>
                 </div>"""
 
     ai_html = """
                 <div class="ai-section">
                     <div class="ai-section-header">
-                        <div class="ai-section-title">✨ AI 热点分析</div>
+                        <div class="ai-section-title">✨ AI trend analysis</div>
                         <span class="ai-section-badge">AI</span>
                     </div>
                     <div class="ai-blocks-grid">"""
@@ -332,7 +332,7 @@ def render_ai_analysis_html_rich(result: AIAnalysisResult) -> str:
         content_html = _escape_html(content).replace("\n", "<br>")
         ai_html += f"""
                     <div class="ai-block">
-                        <div class="ai-block-title">核心热点态势</div>
+                        <div class="ai-block-title">Core Trends</div>
                         <div class="ai-block-content">{content_html}</div>
                     </div>"""
 
@@ -341,7 +341,7 @@ def render_ai_analysis_html_rich(result: AIAnalysisResult) -> str:
         content_html = _escape_html(content).replace("\n", "<br>")
         ai_html += f"""
                     <div class="ai-block">
-                        <div class="ai-block-title">舆论风向争议</div>
+                        <div class="ai-block-title">Sentiment & Controversy</div>
                         <div class="ai-block-content">{content_html}</div>
                     </div>"""
 
@@ -350,7 +350,7 @@ def render_ai_analysis_html_rich(result: AIAnalysisResult) -> str:
         content_html = _escape_html(content).replace("\n", "<br>")
         ai_html += f"""
                     <div class="ai-block">
-                        <div class="ai-block-title">异动与弱信号</div>
+                        <div class="ai-block-title">Signals & Anomalies</div>
                         <div class="ai-block-content">{content_html}</div>
                     </div>"""
 
@@ -359,7 +359,7 @@ def render_ai_analysis_html_rich(result: AIAnalysisResult) -> str:
         content_html = _escape_html(content).replace("\n", "<br>")
         ai_html += f"""
                     <div class="ai-block">
-                        <div class="ai-block-title">RSS 深度洞察</div>
+                        <div class="ai-block-title">RSS Insights</div>
                         <div class="ai-block-content">{content_html}</div>
                     </div>"""
 
@@ -368,7 +368,7 @@ def render_ai_analysis_html_rich(result: AIAnalysisResult) -> str:
         content_html = _escape_html(content).replace("\n", "<br>")
         ai_html += f"""
                     <div class="ai-block">
-                        <div class="ai-block-title">研判策略建议</div>
+                        <div class="ai-block-title">Outlook & Strategy</div>
                         <div class="ai-block-content">{content_html}</div>
                     </div>"""
 
@@ -382,26 +382,26 @@ def render_ai_analysis_html_rich(result: AIAnalysisResult) -> str:
             source_html = ""
             if source_url.startswith(("https://", "http://")):
                 safe_url = _escape_html(source_url)
-                source_html = f'<p>来源：<a href="{safe_url}" target="_blank" rel="noopener noreferrer">打开原文</a></p>'
+                source_html = f'<p>Source: <a href="{safe_url}" target="_blank" rel="noopener noreferrer">Open source</a></p>'
             translation_html = ""
             if translation_vi:
                 translation_html = (
-                    f'<div style="margin:8px 0"><label style="display:block;font-weight:700;margin-bottom:4px">Dịch nội dung nguồn sang tiếng Việt</label>'
+                    f'<div style="margin:8px 0"><label style="display:block;font-weight:700;margin-bottom:4px">Vietnamese translation of source</label>'
                     f'<textarea readonly rows="3" style="box-sizing:border-box;width:100%;padding:10px;border:1px solid #cbd5e1;border-radius:8px;background:#f8fafc;color:#0f172a">{translation_vi}</textarea>'
-                    f'<button type="button" onclick="copyXField(this)" style="margin-top:6px;padding:8px 12px;border:0;border-radius:7px;background:#475569;color:white;font-weight:700;cursor:pointer">Sao chép bản dịch</button></div>'
+                    f'<button type="button" onclick="copyXField(this)" style="margin-top:6px;padding:8px 12px;border:0;border-radius:7px;background:#475569;color:white;font-weight:700;cursor:pointer">Copy translation</button></div>'
                 )
             drafts_html += (
                 f'<div class="ai-block">'
                 f'<div class="ai-block-title">{index}. {topic}</div>'
                 f'{translation_html}'
-                f'<div style="margin:8px 0"><label style="display:block;font-weight:700;margin-bottom:4px">Bản nháp tiếng Việt để đăng X</label>'
+                f'<div style="margin:8px 0"><label style="display:block;font-weight:700;margin-bottom:4px">Vietnamese draft for X</label>'
                 f'<textarea readonly rows="3" style="box-sizing:border-box;width:100%;padding:10px;border:1px solid #93c5fd;border-radius:8px;background:#eff6ff;color:#0f172a">{draft_text}</textarea>'
-                f'<button type="button" onclick="copyXField(this)" style="margin-top:6px;padding:9px 14px;border:0;border-radius:7px;background:#2563eb;color:white;font-weight:700;cursor:pointer">Sao chép bản nháp đăng X</button></div>'
+                f'<button type="button" onclick="copyXField(this)" style="margin-top:6px;padding:9px 14px;border:0;border-radius:7px;background:#2563eb;color:white;font-weight:700;cursor:pointer">Copy X draft</button></div>'
                 f'{source_html}</div>'
             )
         ai_html += f"""
                     <div class="ai-block">
-                        <div class="ai-block-title">可复制的 X 草稿（每个主题独立）</div>
+                        <div class="ai-block-title">Copy-ready X drafts (one per topic)</div>
                         <div class="ai-block-content">{drafts_html}</div>
                     </div>"""
 
@@ -411,7 +411,7 @@ def render_ai_analysis_html_rich(result: AIAnalysisResult) -> str:
             summaries_html = _escape_html(summaries_text).replace("\n", "<br>")
             ai_html += f"""
                     <div class="ai-block">
-                        <div class="ai-block-title">独立源点速览</div>
+                        <div class="ai-block-title">Source briefs</div>
                         <div class="ai-block-content">{summaries_html}</div>
                     </div>"""
 
