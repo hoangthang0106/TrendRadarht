@@ -58,7 +58,7 @@ def render_html_content(
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Clip hot & tin đang lên</title>
+        <title>Viral Clip Radar | TrendRadar</title>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" integrity="sha512-BNaRQnYJYiPSqHHDb58B0yaPfCu+Wgds8Gp/gU33kqBtgNS4tSPHuGibyoeqMV/TJlSKda6FXzoEyYGjTe+vXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         <style>
             * { box-sizing: border-box; }
@@ -1531,6 +1531,168 @@ def render_html_content(
                 .standalone-section .news-item { padding: 8px 2px; }
             }
 
+
+            /* English, compact, clip-first dashboard redesign */
+            html { background: #f3f5f9; scroll-behavior: smooth; }
+            body {
+                padding: 20px;
+                background: radial-gradient(ellipse at top left, #eef2ff 0, #f5f7fb 38%, #eef2f6 100%);
+                color: #172033; line-height: 1.48;
+            }
+            .container {
+                width: min(100%, 1280px); max-width: 1280px; overflow: hidden;
+                border: 1px solid #e3e8f0; border-radius: 18px;
+                box-shadow: 0 16px 50px rgba(25,38,66,.09);
+            }
+            .header {
+                padding: 26px 30px 20px; text-align: left;
+                background: linear-gradient(118deg, #101a2e 0%, #172c4f 58%, #263c68 100%);
+            }
+            .header-title {
+                max-width: 760px; padding-right: 250px; margin: 0 0 18px;
+                font-size: clamp(23px, 3vw, 30px); line-height: 1.15;
+                letter-spacing: -.035em; font-weight: 760;
+            }
+            .header-info {
+                grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+                gap: 10px; max-width: 720px; opacity: 1;
+            }
+            .info-item {
+                padding: 10px 13px; text-align: left;
+                border: 1px solid rgba(255,255,255,.14); border-radius: 11px;
+                background: rgba(255,255,255,.08);
+            }
+            .info-label { margin-bottom: 3px; color: #c4cee0; opacity: 1; font-size: 11px; }
+            .info-value { color: #fff; font-size: 15px; }
+            .save-buttons { top: 20px; right: 24px; gap: 7px; }
+            .toggle-wide-btn, .toggle-dark-btn {
+                min-width: 36px; min-height: 36px; border: 1px solid rgba(255,255,255,.2);
+                border-radius: 9px; background: rgba(255,255,255,.10); color: #fff; cursor: pointer;
+            }
+            .save-btn, .save-dropdown-trigger {
+                min-height: 36px; padding: 8px 12px;
+                border-color: rgba(255,255,255,.22); background: rgba(255,255,255,.10); color: #fff;
+            }
+            .save-btn { border-radius: 9px 0 0 9px; font-size: 12px; }
+            .save-dropdown-trigger { border-radius: 0 9px 9px 0; }
+            .content { padding: 22px 26px 30px; }
+            .search-bar { display: block; padding: 0 0 16px; }
+            .search-input {
+                max-width: 520px; padding: 11px 14px; border-radius: 10px;
+                border-color: #dce2eb; background: #fff; color: #172033;
+            }
+            .section-divider { margin-top: 20px; padding-top: 18px; border-top: 1px solid #e7ebf1; }
+            .standalone-section {
+                margin: 0; padding: 20px; border: 1px solid #e2e8f0; border-radius: 15px;
+                background: #fff; box-shadow: 0 4px 18px rgba(25,38,66,.045);
+            }
+            .standalone-section-header { margin: 0 0 8px; }
+            .standalone-section-title {
+                color: #15223b; font-size: 21px; font-weight: 760; letter-spacing: -.025em;
+            }
+            .standalone-section-count {
+                padding: 5px 10px; border: 1px solid #e5eaf1; border-radius: 999px;
+                background: #f7f9fc; color: #566176; font-size: 11px; font-weight: 700;
+            }
+            .video-source-links {
+                display: grid; gap: 9px; padding: 10px 0 13px;
+                border-bottom: 1px solid #edf0f4; margin: 0 0 12px;
+            }
+            .video-source-group { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+            .video-source-label {
+                flex: 0 0 100%; color: #8b95a6; font-size: 9px; font-weight: 800;
+                letter-spacing: .12em; line-height: 1; margin: 1px 0 2px;
+            }
+            .video-source-links a {
+                display: inline-flex; align-items: center; min-height: 27px; padding: 4px 9px;
+                border: 1px solid #e5e9ef; border-radius: 999px; background: #fff;
+                color: #344054; font-size: 11px; font-weight: 650; text-decoration: none;
+                transition: .16s ease;
+            }
+            .video-source-links a:hover {
+                background: #eef2ff; color: #4338ca; border-color: #c7d2fe;
+                transform: translateY(-1px);
+            }
+            .standalone-groups-grid {
+                display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 430px), 1fr));
+                align-items: start; gap: 14px;
+            }
+            .standalone-group {
+                min-width: 0; margin: 0; padding: 14px;
+                border: 1px solid #e8edf3; border-radius: 13px; background: #f8fafc;
+            }
+            .standalone-header { margin: 0 0 8px; padding: 0 0 9px; border-color: #e7ebf1; }
+            .standalone-name { color: #25324a; font-size: 14px; font-weight: 750; }
+            .standalone-count { color: #7a8597; font-size: 11px; }
+            .standalone-group .news-item {
+                align-items: flex-start; gap: 9px; margin: 0; padding: 11px 9px;
+                border: 1px solid #e8edf3; border-radius: 10px; background: #fff;
+            }
+            .standalone-group .news-item + .news-item { margin-top: 8px; }
+            .standalone-group .news-number {
+                margin-top: 1px; width: 23px; height: 23px; background: #f1f4f8; color: #657188;
+            }
+            .standalone-group .news-content, .standalone-group .news-item.new .news-content {
+                min-width: 0; padding: 0; flex: 1;
+            }
+            .standalone-group .news-header { margin: 0 0 5px; }
+            .standalone-group .news-title { padding: 0; font-size: 13px; line-height: 1.42; overflow-wrap: anywhere; }
+            .standalone-video-thumb {
+                width: min(100%, 380px); max-width: 380px; margin: 6px 0 8px;
+                border-radius: 9px; box-shadow: 0 3px 10px rgba(15,23,42,.10);
+            }
+            .video-preview-btn, .video-copy-btn {
+                min-height: 29px; padding: 5px 9px; margin: 5px 5px 0 0;
+                border: 1px solid #dce3ed; border-radius: 7px; background: #fff;
+                color: #344054; font-size: 11px; font-weight: 700;
+            }
+            .video-preview-btn { border-color: #d9defd; background: #f2f3ff; color: #4338ca; }
+            .video-original-link { margin: 5px 7px 0 0; color: #475467; font-size: 11px; }
+            .video-copy-btn:hover, .video-preview-btn:hover { filter: brightness(.97); transform: translateY(-1px); }
+            .word-group { margin-bottom: 20px; }
+            .word-header { margin-bottom: 8px; }
+            .news-item { margin-bottom: 0; padding: 11px 5px; }
+            .rss-section, .new-section, .ai-section { margin-top: 20px; padding-top: 18px; }
+            .rss-item { margin-bottom: 8px; padding: 12px; }
+            .ai-section { padding: 18px; border-radius: 14px; }
+            .footer { margin-top: 18px; padding: 16px 22px; }
+            body.dark-mode { background: #0b1020; color: #e5eaf3; }
+            body.dark-mode .container, body.dark-mode .standalone-section { background: #111827; border-color: #273246; }
+            body.dark-mode .standalone-group { background: #151e2e; border-color: #2b3548; }
+            body.dark-mode .standalone-group .news-item { background: #111827; border-color: #2b3548; }
+            body.dark-mode .standalone-name, body.dark-mode .standalone-section-title { color: #e8edf6; }
+            body.dark-mode .standalone-section-count, body.dark-mode .search-input {
+                background: #151e2e; border-color: #354156; color: #e8edf6;
+            }
+            body.dark-mode .video-source-links { border-color: #2b3548; }
+            body.dark-mode .video-source-links a { background: #151e2e; color: #dbe2f0; border-color: #354156; }
+            body.dark-mode .video-source-links a:hover { background: #252b49; color: #dcd7ff; border-color: #514a86; }
+            body.dark-mode .video-preview-btn { background: #252b49; color: #dcd7ff; border-color: #514a86; }
+            body.dark-mode .video-copy-btn { background: #151e2e; color: #e5eaf3; border-color: #354156; }
+            @media (max-width: 760px) {
+                body { padding: 8px; }
+                .container { border-radius: 13px; }
+                .header { padding: 22px 16px 16px; }
+                .header-title { margin: 0 0 14px; padding-right: 0; font-size: 22px; }
+                .save-buttons { position: static; justify-content: flex-start; margin: 0 0 13px; }
+                .header-info { gap: 6px; }
+                .info-item { padding: 8px; }
+                .info-label { font-size: 10px; }
+                .info-value { font-size: 13px; }
+                .content { padding: 12px; }
+                .standalone-section { padding: 13px; }
+                .standalone-section-title { font-size: 18px; }
+                .standalone-group { padding: 10px; }
+                .standalone-group .news-item { padding: 9px 7px; }
+                .standalone-group .news-content { padding-right: 0; }
+                .standalone-video-thumb { max-width: 100%; }
+            }
+            @media (max-width: 420px) {
+                .header-info { grid-template-columns: 1fr 1fr !important; }
+                .header-info .info-item:last-child { grid-column: 1 / -1; }
+                .video-source-group { gap: 5px; }
+                .video-source-links a { min-height: 25px; padding: 4px 7px; font-size: 10px; }
+            }
         </style>
     </head>
     <body>
@@ -1539,19 +1701,19 @@ def render_html_content(
             <div class="header">
                 <div class="header-watermark">TrendRadar</div>
                 <div class="save-buttons">
-                    <button class="toggle-wide-btn" onclick="toggleWideMode()" title="切换宽屏/窄屏">⛶</button>
-                    <button class="toggle-dark-btn" onclick="toggleDarkMode()" title="切换暗色/亮色">☽</button>
+                    <button class="toggle-wide-btn" onclick="toggleWideMode()" title="Toggle wide layout">⛶</button>
+                    <button class="toggle-dark-btn" onclick="toggleDarkMode()" title="Toggle dark mode">☽</button>
                     <div class="save-btn-group">
-                        <button class="save-btn" onclick="saveAsImage(event)">导出</button>
+                        <button class="save-btn" onclick="saveAsImage(event)">Export</button>
                         <button class="save-dropdown-trigger">▾</button>
                         <div class="save-dropdown-menu">
-                            <button class="save-dropdown-item" onclick="saveAsImage(event)"><svg class="dropdown-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="12" height="12" rx="2"/><circle cx="8" cy="7.5" r="2.5"/><path d="M12 4h.01"/></svg>整页截图</button>
-                            <button class="save-dropdown-item" onclick="saveAsMultipleImages(event)"><svg class="dropdown-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="4" width="10" height="10" rx="1.5"/><path d="M5 4V2.5A1.5 1.5 0 016.5 1h7A1.5 1.5 0 0115 2.5v7a1.5 1.5 0 01-1.5 1.5H12"/></svg>分段截图</button>
+                            <button class="save-dropdown-item" onclick="saveAsImage(event)"><svg class="dropdown-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="12" height="12" rx="2"/><circle cx="8" cy="7.5" r="2.5"/><path d="M12 4h.01"/></svg>Full-page screenshot</button>
+                            <button class="save-dropdown-item" onclick="saveAsMultipleImages(event)"><svg class="dropdown-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="4" width="10" height="10" rx="1.5"/><path d="M5 4V2.5A1.5 1.5 0 016.5 1h7A1.5 1.5 0 0115 2.5v7a1.5 1.5 0 01-1.5 1.5H12"/></svg>Split into sections</button>
                             <button class="save-dropdown-item" onclick="saveAsMarkdown()"><svg class="dropdown-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2.5 2h11A1.5 1.5 0 0115 3.5v9a1.5 1.5 0 01-1.5 1.5h-11A1.5 1.5 0 011 12.5v-9A1.5 1.5 0 012.5 2z"/><path d="M4 11V5l2.5 3L9 5v6"/><path d="M11.5 8v3m0 0l-1.5-2m1.5 2l1.5-2"/></svg>Markdown</button>
                         </div>
                     </div>
                 </div>
-                <div class="header-title">Clip hot &amp; xu hướng</div>
+                <div class="header-title">Viral clips &amp; live trends</div>
                 <div class="header-info" style="grid-template-columns: repeat(3, minmax(0, 1fr));">"""
 
     # 使用提供的时间函数或默认 datetime.now
@@ -1562,11 +1724,11 @@ def render_html_content(
 
     # 处理报告类型显示
     if mode == "current":
-        mode_display = "当前榜单"
+        mode_display = "Current snapshot"
     elif mode == "incremental":
-        mode_display = "增量分析"
+        mode_display = "Live updates"
     else:
-        mode_display = "全天汇总"
+        mode_display = "Daily summary"
 
     # 计算各项数据
     hot_news_count = sum(len(stat["titles"]) for stat in report_data["stats"])
@@ -1589,23 +1751,23 @@ def render_html_content(
         clip_count = sum(len(group.get("items", [])) for group in standalone_data.get("platforms", []))
         clip_count += sum(len(group.get("items", [])) for group in standalone_data.get("rss_feeds", []))
     if ai_analysis and getattr(ai_analysis, "success", False):
-        ai_status = "Sẵn sàng"
+        ai_status = "Ready"
     elif ai_analysis:
-        ai_status = "Cần kiểm tra"
+        ai_status = "Needs attention"
     else:
-        ai_status = "Chưa bật"
+        ai_status = "Off"
 
     html += f"""
                     <div class="info-item">
-                        <span class="info-label">Cập nhật lúc</span>
+                        <span class="info-label">Last updated</span>
                         <span class="info-value">{now.strftime("%d-%m %H:%M")}</span>
                     </div>
                     <div class="info-item">
-                        <span class="info-label">Video đang hot</span>
+                        <span class="info-label">Trending clips</span>
                         <span class="info-value">{clip_count}</span>
                     </div>
                     <div class="info-item">
-                        <span class="info-label">AI bản nháp</span>
+                        <span class="info-label">AI drafts</span>
                         <span class="info-value">{ai_status}</span>
                     </div>
                 </div>
@@ -1613,7 +1775,7 @@ def render_html_content(
 
             <div class="content">
                 <div class="search-bar">
-                    <input type="text" class="search-input" placeholder="Tìm tiêu đề video hoặc tin..." oninput="handleSearch(this.value)">
+                    <input type="text" class="search-input" placeholder="Search clips and stories..." oninput="handleSearch(this.value)">
                 </div>"""
 
     # 生成热点词汇统计部分的HTML
@@ -1625,7 +1787,7 @@ def render_html_content(
         # 生成 Tab 栏 HTML
         total_news_count = sum(s["count"] for s in report_data["stats"])
         tab_bar_html = '<div class="tab-bar-wrapper"><div class="tab-bar">'
-        tab_bar_html += f'<button class="tab-btn" data-tab-index="all">全部<span class="tab-count">{total_news_count}</span></button>'
+        tab_bar_html += f'<button class="tab-btn" data-tab-index="all">All stories<span class="tab-count">{total_news_count}</span></button>'
         for tab_i, tab_stat in enumerate(report_data["stats"]):
             escaped_tab_word = html_escape(tab_stat["word"])
             tab_count = tab_stat["count"]
@@ -1650,7 +1812,7 @@ def render_html_content(
                     <div class="word-header">
                         <div class="word-info">
                             <div class="word-name">{escaped_word}</div>
-                            <div class="word-count {count_class}">{count} 条</div>
+                            <div class="word-count {count_class}">{count} items</div>
                         </div>
                         <div class="word-index"><span class="collapse-icon">▼</span>{i}/{total_count}</div>
                     </div>"""
@@ -1723,7 +1885,7 @@ def render_html_content(
                 # 处理出现次数
                 count_info = title_data.get("count", 1)
                 if count_info > 1:
-                    stats_html += f'<span class="count-info">{count_info}次</span>'
+                    stats_html += f'<span class="count-info">{count_info} appearances</span>'
 
                 stats_html += """
                             </div>
@@ -1758,7 +1920,7 @@ def render_html_content(
     if show_new_section and report_data["new_titles"]:
         new_titles_html += f"""
                 <div class="new-section">
-                    <div class="new-section-title">本次新增热点 (共 {report_data['total_new_count']} 条)</div>
+                    <div class="new-section-title">New this update ({report_data['total_new_count']} items)</div>
                     <div class="new-sources-grid">"""
 
         for source_data in report_data["new_titles"]:
@@ -1767,7 +1929,7 @@ def render_html_content(
 
             new_titles_html += f"""
                     <div class="new-source-group">
-                        <div class="new-source-title">{escaped_source} · {titles_count}条</div>"""
+                        <div class="new-source-title">{escaped_source} · {titles_count} items</div>"""
 
             # 为新增新闻也添加序号
             for idx, title_data in enumerate(source_data["titles"], 1):
@@ -1819,7 +1981,7 @@ def render_html_content(
                 </div>"""
 
     # 生成 RSS 统计内容
-    def render_rss_stats_html(stats: List[Dict], title: str = "RSS 订阅更新") -> str:
+    def render_rss_stats_html(stats: List[Dict], title: str = "RSS feed updates") -> str:
         """渲染 RSS 统计区块 HTML
 
         Args:
@@ -1856,7 +2018,7 @@ def render_html_content(
                 <div class="rss-section">
                     <div class="rss-section-header">
                         <div class="rss-section-title">{title}</div>
-                        <div class="rss-section-count">{total_count} 条</div>
+                        <div class="rss-section-count">{total_count} items</div>
                     </div>
                     <div class="rss-feeds-grid">"""
 
@@ -1873,7 +2035,7 @@ def render_html_content(
                     <div class="feed-group">
                         <div class="feed-header">
                             <div class="feed-name">{html_escape(keyword)}</div>
-                            <div class="feed-count">{keyword_count} 条</div>
+                            <div class="feed-count">{keyword_count} items</div>
                         </div>"""
 
             for title_data in titles:
@@ -2003,26 +2165,26 @@ def render_html_content(
         standalone_html = f"""
                 <div class="standalone-section">
                     <div class="standalone-section-header">
-                        <div class="standalone-section-title">🎬 Clip đang hot</div>
-                        <div class="standalone-section-count">{total_count} 条</div>
+                        <div class="standalone-section-title">🎬 Trending videos &amp; clips</div>
+                        <div class="standalone-section-count">{total_count} items</div>
                     </div>
-                    <nav class="video-source-links" aria-label="Nguồn video nổi bật">
+                    <nav class="video-source-links" aria-label="Trending video sources">
                         <div class="video-source-group">
-                            <span class="video-source-label">TRUNG QUỐC</span>
-                            <a href="https://www.douyin.com/" target="_blank" rel="noopener noreferrer" title="Mở Douyin; feed Douyin cũng được lấy tự động bên dưới">Douyin</a>
-                            <a href="https://www.bilibili.com/v/popular/all" target="_blank" rel="noopener noreferrer" title="Mở video phổ biến trên Bilibili">Bilibili</a>
-                            <a href="https://www.kuaishou.com/" target="_blank" rel="noopener noreferrer" title="Mở Kuaishou; feed Kuaishou cũng được lấy tự động bên dưới">Kuaishou</a>
-                            <a href="https://www.iqiyi.com/" target="_blank" rel="noopener noreferrer" title="Mở iQIYI; bảng xếp hạng được lấy tự động bên dưới">iQIYI</a>
-                            <a href="https://v.qq.com/" target="_blank" rel="noopener noreferrer" title="Mở Tencent Video">Tencent Video</a>
-                            <a href="https://channels.weixin.qq.com/" target="_blank" rel="noopener noreferrer" title="Mở cổng WeChat Video Channels. Video hot được duyệt trong ứng dụng WeChat; đây không phải feed trending tự động">WeChat 视频号</a>
+                            <span class="video-source-label">CHINA</span>
+                            <a href="https://www.douyin.com/" target="_blank" rel="noopener noreferrer" title="Open Douyin; trending clips are also collected below">Douyin</a>
+                            <a href="https://www.bilibili.com/v/popular/all" target="_blank" rel="noopener noreferrer" title="Open popular videos on Bilibili">Bilibili</a>
+                            <a href="https://www.kuaishou.com/" target="_blank" rel="noopener noreferrer" title="Open Kuaishou; trending clips are also collected below">Kuaishou</a>
+                            <a href="https://www.iqiyi.com/" target="_blank" rel="noopener noreferrer" title="Open iQIYI; its ranking is also collected below">iQIYI</a>
+                            <a href="https://v.qq.com/" target="_blank" rel="noopener noreferrer" title="Open Tencent Video">Tencent Video</a>
+                            <a href="https://channels.weixin.qq.com/" target="_blank" rel="noopener noreferrer" title="Open the WeChat Video Channels portal. Browse trending videos in the WeChat app; this is not an automated trending feed">WeChat Channels</a>
                         </div>
                         <div class="video-source-group">
-                            <span class="video-source-label">TOÀN CẦU</span>
+                            <span class="video-source-label">GLOBAL</span>
                             <a href="https://www.youtube.com/feed/trending" target="_blank" rel="noopener noreferrer">YouTube</a>
                             <a href="https://www.tiktok.com/explore" target="_blank" rel="noopener noreferrer">TikTok</a>
                             <a href="https://www.instagram.com/reels/" target="_blank" rel="noopener noreferrer">Instagram Reels</a>
                             <a href="https://vk.com/clips" target="_blank" rel="noopener noreferrer">VK Clips</a>
-                            <a href="https://www.reddit.com/r/videos+funny+Unexpected+interestingasfuck/hot/" target="_blank" rel="noopener noreferrer" title="Mở cộng đồng clip viral Reddit">Reddit</a>
+                            <a href="https://www.reddit.com/r/videos+funny+Unexpected+interestingasfuck/hot/" target="_blank" rel="noopener noreferrer" title="Open Reddit viral video communities">Reddit</a>
                             <a href="https://x.com/explore/tabs/trending" target="_blank" rel="noopener noreferrer">X Trending</a>
                             <a href="https://www.facebook.com/watch/" target="_blank" rel="noopener noreferrer">Facebook Watch</a>
                             <a href="https://www.snapchat.com/spotlight" target="_blank" rel="noopener noreferrer">Snapchat Spotlight</a>
@@ -2038,7 +2200,7 @@ def render_html_content(
                 standalone_html += f"""
                         <button class="tab-btn{active}" data-standalone-tab="{idx}">{html_escape(g["name"])}<span class="tab-count">{g["count"]}</span></button>"""
             standalone_html += f"""
-                        <button class="tab-btn" data-standalone-tab="all">全部<span class="tab-count">{total_count}</span></button>
+                        <button class="tab-btn" data-standalone-tab="all">All clips<span class="tab-count">{total_count}</span></button>
                     </div>"""
 
         standalone_html += """
@@ -2056,7 +2218,7 @@ def render_html_content(
                     <div class="standalone-group" data-standalone-tab="{group_idx}">
                         <div class="standalone-header">
                             <div class="standalone-name">{html_escape(platform_name)}</div>
-                            <div class="standalone-count">{len(items)} 条</div>
+                            <div class="standalone-count">{len(items)} clips</div>
                         </div>"""
 
             # 渲染每个条目（复用 news-item 结构）
@@ -2114,7 +2276,7 @@ def render_html_content(
 
                 # 出现次数（复用 count-info 样式）
                 if count > 1:
-                    standalone_html += f'<span class="count-info">{count}次</span>'
+                    standalone_html += f'<span class="count-info">{count} appearances</span>'
 
                 standalone_html += """
                                 </div>
@@ -2135,8 +2297,8 @@ def render_html_content(
                     escaped_url = html_escape(url)
                     standalone_html += (
                         f'<button type="button" class="standalone-video-thumb video-preview-btn" '
-                        f'data-preview-url="{escaped_url}" aria-label="Xem trước clip">'
-                        f'<img src="{escaped_thumb}" loading="lazy" alt="Ảnh xem trước clip"></button>'
+                        f'data-preview-url="{escaped_url}" aria-label="Preview clip">'
+                        f'<img src="{escaped_thumb}" loading="lazy" alt="Clip preview"></button>'
                     )
 
                 # Video title stays as a direct clickable link.
@@ -2144,9 +2306,9 @@ def render_html_content(
                 if url:
                     escaped_url = html_escape(url)
                     standalone_html += f'<a href="{escaped_url}" target="_blank" rel="noopener noreferrer" class="news-link">{escaped_title}</a>'
-                    standalone_html += f' <button type="button" class="video-preview-btn" data-preview-url="{escaped_url}">▶ Xem clip</button>'
-                    standalone_html += f' <a class="video-original-link" href="{escaped_url}" target="_blank" rel="noopener noreferrer">↗ Mở clip gốc</a>'
-                    standalone_html += f' <button type="button" class="video-copy-btn" data-copy-url="{escaped_url}">Sao chép link</button>'
+                    standalone_html += f' <button type="button" class="video-preview-btn" data-preview-url="{escaped_url}">▶ Preview</button>'
+                    standalone_html += f' <a class="video-original-link" href="{escaped_url}" target="_blank" rel="noopener noreferrer">↗ Open original</a>'
+                    standalone_html += f' <button type="button" class="video-copy-btn" data-copy-url="{escaped_url}">Copy link</button>'
                 else:
                     standalone_html += escaped_title
 
@@ -2170,7 +2332,7 @@ def render_html_content(
                     <div class="standalone-group" data-standalone-tab="{group_idx}">
                         <div class="standalone-header">
                             <div class="standalone-name">{html_escape(feed_name)}</div>
-                            <div class="standalone-count">{len(items)} 条</div>
+                            <div class="standalone-count">{len(items)} clips</div>
                         </div>"""
 
             for j, item in enumerate(items, 1):
@@ -2211,9 +2373,9 @@ def render_html_content(
                 if url:
                     escaped_url = html_escape(url)
                     standalone_html += f'<a href="{escaped_url}" target="_blank" rel="noopener noreferrer" class="news-link">{escaped_title}</a>'
-                    standalone_html += f' <button type="button" class="video-preview-btn" data-preview-url="{escaped_url}">▶ Xem clip</button>'
-                    standalone_html += f' <a class="video-original-link" href="{escaped_url}" target="_blank" rel="noopener noreferrer">↗ Mở clip gốc</a>'
-                    standalone_html += f' <button type="button" class="video-copy-btn" data-copy-url="{escaped_url}">Sao chép link</button>'
+                    standalone_html += f' <button type="button" class="video-preview-btn" data-preview-url="{escaped_url}">▶ Preview</button>'
+                    standalone_html += f' <a class="video-original-link" href="{escaped_url}" target="_blank" rel="noopener noreferrer">↗ Open original</a>'
+                    standalone_html += f' <button type="button" class="video-copy-btn" data-copy-url="{escaped_url}">Copy link</button>'
                 else:
                     standalone_html += escaped_title
 
@@ -2232,8 +2394,8 @@ def render_html_content(
         return standalone_html
 
     # 生成 RSS 统计和新增 HTML
-    rss_stats_html = render_rss_stats_html(rss_items, "RSS 订阅更新") if rss_items else ""
-    rss_new_html = render_rss_stats_html(rss_new_items, "RSS 新增更新") if rss_new_items else ""
+    rss_stats_html = render_rss_stats_html(rss_items, "RSS feed updates") if rss_items else ""
+    rss_new_html = render_rss_stats_html(rss_new_items, "New RSS items") if rss_new_items else ""
 
     # 生成独立展示区 HTML
     standalone_html = render_standalone_html(standalone_data)
@@ -2286,7 +2448,7 @@ def render_html_content(
     if report_data.get("failed_ids"):
         html += """
                 <div class="error-section">
-                    <div class="error-title">⚠️ Nguồn lỗi (xem sau danh sách clip)</div>
+                    <div class="error-title">⚠️ Sources with errors</div>
                     <ul class="error-list">"""
         for id_value in report_data.get("failed_ids", []):
             html += f'<li class="error-item">{html_escape(id_value)}</li>'
@@ -2299,16 +2461,16 @@ def render_html_content(
 
             <div class="footer">
                 <div class="footer-content">
-                    由 <span class="project-name">TrendRadar</span> 生成 ·
+                    Generated with <span class="project-name">TrendRadar</span> ·
                     <a href="https://github.com/sansan0/TrendRadar" target="_blank" class="footer-link">
-                        GitHub 开源项目
+                        Open-source project on GitHub
                     </a>"""
 
     if update_info:
         html += f"""
                     <br>
                     <span style="color: #ea580c; font-weight: 500;">
-                        发现新版本 {update_info['remote_version']}，当前版本 {update_info['current_version']}
+                        Version {update_info['remote_version']} is available (current: {update_info['current_version']})
                     </span>"""
 
     html += """
@@ -2317,16 +2479,16 @@ def render_html_content(
         </div>
 
         <div class="fab-bar">
-            <button class="fab-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="返回顶部">↑</button>
+            <button class="fab-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Back to top">↑</button>
             <button class="fab-btn fab-help">
                 <span>?</span>
                 <div class="fab-tooltip">
-                    <div class="tip-row"><span>切换宽屏</span><span class="tip-key">W</span></div>
-                    <div class="tip-row"><span>暗色模式</span><span class="tip-key">D</span></div>
-                    <div class="tip-row"><span>搜索</span><span class="tip-key">/</span></div>
-                    <div class="tip-row"><span>上一个 Tab</span><span class="tip-key">←</span></div>
-                    <div class="tip-row"><span>下一个 Tab</span><span class="tip-key">→</span></div>
-                    <div class="tip-row"><span>序号可复制</span><span class="tip-key">点击</span></div>
+                    <div class="tip-row"><span>Toggle wide layout</span><span class="tip-key">W</span></div>
+                    <div class="tip-row"><span>Toggle dark mode</span><span class="tip-key">D</span></div>
+                    <div class="tip-row"><span>Search</span><span class="tip-key">/</span></div>
+                    <div class="tip-row"><span>Previous tab</span><span class="tip-key">←</span></div>
+                    <div class="tip-row"><span>Next tab</span><span class="tip-key">→</span></div>
+                    <div class="tip-row"><span>Click a number to copy its title and link</span><span class="tip-key">点击</span></div>
                 </div>
             </button>
         </div>
@@ -2341,7 +2503,7 @@ def render_html_content(
                 var text = field.value || field.textContent || '';
                 var original = button.textContent;
                 function done() {
-                    button.textContent = 'Đã sao chép — dán vào X';
+                    button.textContent = 'Copied — ready to paste into X';
                     setTimeout(function() { button.textContent = original; }, 1800);
                 }
                 function fallbackCopy() {
@@ -2349,9 +2511,9 @@ def render_html_content(
                     field.select();
                     try {
                         if (document.execCommand('copy')) { done(); }
-                        else { button.textContent = 'Đã chọn nội dung — nhấn Ctrl+C'; }
+                        else { button.textContent = 'Text selected — press Ctrl+C'; }
                     } catch (e) {
-                        button.textContent = '已选中，请按 Ctrl+C';
+                        button.textContent = 'Text selected — press Ctrl+C';
                     }
                 }
                 if (navigator.clipboard && navigator.clipboard.writeText) {
@@ -2688,7 +2850,7 @@ def render_html_content(
                 var screenshotState = null;
 
                 try {
-                    button.textContent = '生成中...';
+                    button.textContent = 'Generating...';
                     button.disabled = true;
                     window.scrollTo(0, 0);
 
@@ -2731,7 +2893,7 @@ def render_html_content(
 
                     const link = document.createElement('a');
                     const now = new Date();
-                    const filename = `TrendRadar_热点新闻分析_${now.getFullYear()}${String(now.getMonth() + 1).padStart(2, '0')}${String(now.getDate()).padStart(2, '0')}_${String(now.getHours()).padStart(2, '0')}${String(now.getMinutes()).padStart(2, '0')}.png`;
+                    const filename = `TrendRadar_Trending_Report_${now.getFullYear()}${String(now.getMonth() + 1).padStart(2, '0')}${String(now.getDate()).padStart(2, '0')}_${String(now.getHours()).padStart(2, '0')}${String(now.getMinutes()).padStart(2, '0')}.png`;
 
                     link.download = filename;
                     link.href = canvas.toDataURL('image/png', 1.0);
@@ -2741,7 +2903,7 @@ def render_html_content(
                     link.click();
                     document.body.removeChild(link);
 
-                    button.textContent = '保存成功!';
+                    button.textContent = 'Saved!';
                     setTimeout(() => {
                         button.innerHTML = originalHTML;
                         button.disabled = false;
@@ -2751,7 +2913,7 @@ def render_html_content(
                     const buttons = document.querySelector('.save-buttons');
                     buttons.style.visibility = 'visible';
                     if (screenshotState) { restoreAfterScreenshot(screenshotState); }
-                    button.textContent = '保存失败';
+                    button.textContent = 'Save failed';
                     setTimeout(() => {
                         button.innerHTML = originalHTML;
                         button.disabled = false;
@@ -2769,7 +2931,7 @@ def render_html_content(
 
                 try {
                     screenshotState2 = prepareForScreenshot();
-                    button.textContent = '分析中...';
+                    button.textContent = 'Analyzing...';
                     button.disabled = true;
 
                     // 获取所有可能的分割元素
@@ -2960,7 +3122,7 @@ def render_html_content(
 
                     // 下载所有图片
                     const now = new Date();
-                    const baseFilename = `TrendRadar_热点新闻分析_${now.getFullYear()}${String(now.getMonth() + 1).padStart(2, '0')}${String(now.getDate()).padStart(2, '0')}_${String(now.getHours()).padStart(2, '0')}${String(now.getMinutes()).padStart(2, '0')}`;
+                    const baseFilename = `TrendRadar_Trending_Report_${now.getFullYear()}${String(now.getMonth() + 1).padStart(2, '0')}${String(now.getDate()).padStart(2, '0')}_${String(now.getHours()).padStart(2, '0')}${String(now.getMinutes()).padStart(2, '0')}`;
 
                     for (let i = 0; i < images.length; i++) {
                         const link = document.createElement('a');
@@ -2974,7 +3136,7 @@ def render_html_content(
                         await new Promise(resolve => setTimeout(resolve, 100));
                     }
 
-                    button.textContent = `已保存 ${segments.length} 张图片!`;
+                    button.textContent = `Saved ${segments.length} images!`;
                     restoreAfterScreenshot(screenshotState2);
                     setTimeout(() => {
                         button.innerHTML = originalHTML;
@@ -2982,11 +3144,11 @@ def render_html_content(
                     }, 2000);
 
                 } catch (error) {
-                    console.error('分段保存失败:', error);
+                    console.error('Sectioned export failed:', error);
                     const buttons = document.querySelector('.save-buttons');
                     buttons.style.visibility = 'visible';
                     if (screenshotState2) { restoreAfterScreenshot(screenshotState2); }
-                    button.textContent = '保存失败';
+                    button.textContent = 'Save failed';
                     setTimeout(() => {
                         button.innerHTML = originalHTML;
                         button.disabled = false;
@@ -3057,7 +3219,7 @@ def render_html_content(
                 // 热点关键词区
                 var wordGroups = document.querySelectorAll('.hotlist-section > .word-group');
                 if (wordGroups.length) {
-                    lines.push('## 热点新闻');
+                    lines.push('## Trending stories');
                     lines.push('');
                     wordGroups.forEach(function(group) {
                         var wordName = group.querySelector('.word-name');
@@ -3079,7 +3241,7 @@ def render_html_content(
                 var newSection = document.querySelector('.new-section');
                 if (newSection) {
                     var newTitle = newSection.querySelector('.new-section-title');
-                    lines.push('## ' + (newTitle ? newTitle.textContent.trim() : '本次新增热点'));
+                    lines.push('## ' + (newTitle ? newTitle.textContent.trim() : 'New this update'));
                     lines.push('');
                     var sourceGroups = newSection.querySelectorAll('.new-source-group');
                     sourceGroups.forEach(function(sg) {
@@ -3101,7 +3263,7 @@ def render_html_content(
                 var rssSection = document.querySelector('.rss-section');
                 if (rssSection) {
                     var rssSectionTitle = rssSection.querySelector('.rss-section-title');
-                    lines.push('## ' + (rssSectionTitle ? rssSectionTitle.textContent.trim() : 'RSS 订阅更新'));
+                    lines.push('## ' + (rssSectionTitle ? rssSectionTitle.textContent.trim() : 'RSS feed updates'));
                     lines.push('');
                     var feedGroups = rssSection.querySelectorAll('.feed-group');
                     feedGroups.forEach(function(group) {
@@ -3138,7 +3300,7 @@ def render_html_content(
                     var aiError = aiSection.querySelector('.ai-error') || aiSection.querySelector('.ai-warning');
                     var aiInfo = aiSection.querySelector('.ai-info');
                     if (aiError) {
-                        lines.push('## AI 分析');
+                        lines.push('## AI analysis');
                         lines.push('');
                         lines.push('> ' + aiError.textContent.trim());
                         lines.push('');
@@ -3146,7 +3308,7 @@ def render_html_content(
                         // 跳过 info 提示（如"跳过"）
                     } else {
                         var aiTitle = aiSection.querySelector('.ai-section-title');
-                        lines.push('## ' + (aiTitle ? aiTitle.textContent.trim() : 'AI 热点分析'));
+                        lines.push('## ' + (aiTitle ? aiTitle.textContent.trim() : 'AI trend analysis'));
                         lines.push('');
                         var aiBlocks = aiSection.querySelectorAll('.ai-block');
                         aiBlocks.forEach(function(block) {
@@ -3168,7 +3330,7 @@ def render_html_content(
                 var standaloneSection = document.querySelector('.standalone-section');
                 if (standaloneSection) {
                     var standaloneTitle = standaloneSection.querySelector('.standalone-section-title');
-                    lines.push('## ' + (standaloneTitle ? standaloneTitle.textContent.trim() : '独立展示区'));
+                    lines.push('## ' + (standaloneTitle ? standaloneTitle.textContent.trim() : 'Standalone sources'));
                     lines.push('');
                     var groups = standaloneSection.querySelectorAll('.standalone-group');
                     groups.forEach(function(group) {
@@ -3192,7 +3354,7 @@ def render_html_content(
                 if (errorSection) {
                     var errorItems = errorSection.querySelectorAll('.error-item');
                     if (errorItems.length) {
-                        lines.push('## 抓取异常');
+                        lines.push('## Collection errors');
                         lines.push('');
                         errorItems.forEach(function(item) {
                             lines.push('- ' + item.textContent.trim());
@@ -3291,7 +3453,7 @@ def render_html_content(
                         var sourceUrl = button.getAttribute('data-preview-url') || '';
                         var titleWrap = button.closest('.news-title');
                         var titleLink = titleWrap && titleWrap.querySelector('.news-link');
-                        if (previewTitle) previewTitle.textContent = titleLink ? titleLink.textContent.trim() : 'Xem trước clip';
+                        if (previewTitle) previewTitle.textContent = titleLink ? titleLink.textContent.trim() : 'Preview clip';
                         var embedUrl = getVideoEmbedUrl(sourceUrl);
                         if (embedUrl && previewFrame) {
                             previewFrame.src = embedUrl;
@@ -3316,7 +3478,7 @@ def render_html_content(
                     var value = copyButton.getAttribute('data-copy-url') || '';
                     function copied() {
                         var oldText = copyButton.textContent;
-                        copyButton.textContent = 'Đã sao chép';
+                        copyButton.textContent = 'Copied';
                         setTimeout(function() { copyButton.textContent = oldText; }, 1400);
                     }
                     function fallbackCopy() {
@@ -3377,7 +3539,7 @@ def render_html_content(
                     if (!titleEl) return;
                     var numText = numEl.textContent.trim();
                     numEl.innerHTML = '<span class="num-text">' + numText + '</span><span class="copy-icon">' + copySvg + '</span>';
-                    numEl.title = '点击复制标题和链接';
+                    numEl.title = 'Click to copy the title and link';
                     numEl.addEventListener('click', function(e) {
                         e.stopPropagation();
                         var text = titleEl.textContent.trim() + ' ' + titleEl.href;
@@ -3434,14 +3596,14 @@ def render_html_content(
                 })();
             });
         </script>
-        <div id="video-preview-modal" class="video-preview-modal" role="dialog" aria-modal="true" aria-label="Xem trước clip">
+        <div id="video-preview-modal" class="video-preview-modal" role="dialog" aria-modal="true" aria-label="Preview clip">
             <div class="video-preview-dialog">
                 <div class="video-preview-head">
-                    <span id="video-preview-title">Xem trước clip</span>
-                    <button type="button" class="video-preview-close" data-preview-close>Đóng ✕</button>
+                    <span id="video-preview-title">Preview clip</span>
+                    <button type="button" class="video-preview-close" data-preview-close>Close ✕</button>
                 </div>
-                <iframe id="video-preview-frame" class="video-preview-frame" title="Xem trước video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" sandbox="allow-scripts allow-same-origin allow-presentation" allowfullscreen></iframe>
-                <div id="video-preview-fallback" class="video-preview-fallback" style="display:none">Nguồn này không cho nhúng preview. <a href="#" target="_blank" rel="noopener noreferrer">Mở clip trên nền tảng</a></div>
+                <iframe id="video-preview-frame" class="video-preview-frame" title="Video preview" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" sandbox="allow-scripts allow-same-origin allow-presentation" allowfullscreen></iframe>
+                <div id="video-preview-fallback" class="video-preview-fallback" style="display:none">This source does not allow an embedded preview. <a href="#" target="_blank" rel="noopener noreferrer">Open the clip on its platform</a></div>
             </div>
         </div>
     </body>
